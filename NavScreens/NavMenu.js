@@ -3,6 +3,8 @@ import { View, Text, Button ,StyleSheet, Alert} from 'react-native';
 import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Dashboard from '../NavScreens/Dashboard';
+import Setting1 from '../NavScreens/Setting1';
+import Registration from "../NavScreens/Registration";
 import CustomDrawerContent from '../MainNavMenu/CustomDrawerContent.js';
 import {drawerItemsMain} from '../MainNavMenu/drawerItemsMain';
 import CustomHeader from '../MainNavMenu/CustomHeader';
@@ -25,17 +27,41 @@ function HomeScreen({props}) {
     </View>
   );
 }
+function Settings1Screen() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Setting1 />
+    </View>
+  );
+}
+
+function Settings2Screen() {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>Settings 2 Screen</Text>
+    </View>
+  );
+}
+function Registration_call() {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>      
+      <Registration />
+    </View>
+  );
+}
 export function MainDrawerNavigation({props}) {
   return (
     <Drawer.Navigator
       initialRouteName="Home"
       drawerContent={(props) => (
         <CustomDrawerContent drawerItems={drawerItemsMain} {...props} />
-      )}>
+      )}
+    >
       <Drawer.Screen name="Home" component={HomeScreen} />
-      {/* <Drawer.Screen name="Settings1" component={Settings1Screen} />
+      <Drawer.Screen name="Settings1" component={Settings1Screen} />
       <Drawer.Screen name="Settings2" component={Settings2Screen} />
-      <Drawer.Screen name="Userlist" component={UserScreen} />
+      <Drawer.Screen name="Registration" component={Registration_call} />
+      {/* <Drawer.Screen name="Userlist" component={UserScreen} />
       <Drawer.Screen name="UserDetails" component={UserDetailScreen} />
       <Drawer.Screen name="AddUser" component={AddUserScreen} />
       <Drawer.Screen name="AddCenter" component={AddCenterScreen} />
@@ -43,7 +69,6 @@ export function MainDrawerNavigation({props}) {
       <Drawer.Screen name="GetImage" component={UploadImage} />
       <Drawer.Screen name="Workfunction" component={Workingfunction} />
       <Drawer.Screen name="Getdata" component={Getsqldata} /> */}
-      
     </Drawer.Navigator>
   );
 }

@@ -81,16 +81,23 @@ const { control, handleSubmit, formState: { errors } } = useForm({
   const onSubmit = data => {
     axios({
       method: 'post',
-      url: 'https://www.thinkmoveresources.com/generateToken',     
+      // url: 'https://www.thinkmoveresources.com/generateToken',  
+      url: 'https://www.thinkmoveresources.com/mst_user/generateJWT',   
       data,
       headers:{"Content-Type": 'application/x-www-form-urlencoded'}
     }).then(function (response) {
       // Alert.alert('Alert Title',"Succeed");
-      console.log(response.data);
+    
+     console.log(response.data);
       setUsername(response.data);
       usertoken=response.data;
+      if(response.data===""){
+        alert("Wrong Credentials");
+        navigation.navigate('SignIn') 
+    } else{
       AsyncStorage.setItem('jwt', usertoken);
-      navigation.navigate('NavMenu');     
+      navigation.navigate('NavMenu'); 
+      }
       })
       .catch(function (error) {
         console.log(error);

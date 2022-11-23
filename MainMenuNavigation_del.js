@@ -30,7 +30,7 @@
    );
  }
  
- function Settings1Screen() {
+ function Settings1Screen1() {
    return (
      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
        <Text>Settings 1 Screen</Text>

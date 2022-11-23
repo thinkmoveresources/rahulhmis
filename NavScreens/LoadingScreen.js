@@ -4,30 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoadingScreen({ navigation }) {
   
-  // // const getToken='qwqwqwqw';
-  // let getToken = AsyncStorage.getItem('jwt');
-  // console.log('In Loading');
-  // console.log(getToken);
-  // useEffect(
-  //    () => {   
-      
-  //       if (getToken!=null) {
-  //         navigation.reset({
-  //           index: 0,
-  //           routes: [{ name: 'NavMenu' }],
-  //           // routes: [{ name: 'MainNav' }],
-            
-  //         });
-  //       } else {
-  //         navigation.reset({
-  //           index: 0,
-  //           routes: [{ name: 'WelcomeScreen' }],
-  //         });
-  //       }
-      
-  //   }
-  // );
-  useEffect(() => {
+    useEffect(() => {
     readData();
   }, []);
   const readData = async () => {

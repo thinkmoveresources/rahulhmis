@@ -71,7 +71,10 @@ const onSubmit = data => {
     url: 'https://www.thinkmoveresources.com/mst_user/user_insert',     
     data,
     headers:{"Content-Type": 'application/x-www-form-urlencoded'}
-  })
+  }).then(function (response) {
+    alert(response.data);
+    navigation.navigate('SignIn')    
+    })
     .catch(function (error) {
       console.log(error);
     });

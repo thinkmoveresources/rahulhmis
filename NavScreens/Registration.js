@@ -22,6 +22,7 @@ export default function Registration({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [refresh,setRefresh]=useState(false);
   //Dropdown
   const [roleOpen, setRoleOpen] = useState(false);
   const [roleValue, setRoleValue] = useState(null);
@@ -29,6 +30,7 @@ export default function Registration({ navigation }) {
   const [role, setRole] = useState([]);
   const [posts, setPosts] = useState();
   useEffect(() => {
+    
     const sendGetRequest = async () => {
       try {
         const resp = await axios
@@ -99,10 +101,11 @@ export default function Registration({ navigation }) {
   };
   return (
     <SafeAreaView>
+      
       <View style={styles.container}>
         <Text style={styles.text}>Sign in to your account:</Text>
 
-        <Text style={styles.label}>Gender</Text>
+        <Text style={styles.label}>Role</Text>
 
         <Controller
           name="role"
@@ -239,6 +242,7 @@ export default function Registration({ navigation }) {
           <Text style={styles.buttonText}>Go Back</Text>
         </TouchableOpacity>
       </View>
+      
     </SafeAreaView>
   );
 }

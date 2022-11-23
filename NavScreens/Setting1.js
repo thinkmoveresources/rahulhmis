@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
+import React, { useCallback,useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,29 +16,52 @@ import _ from "lodash";
 //   Data Import
 import axios from "axios";
 import filter from "lodash.filter";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
+
 export default function Setting1({ navigation }) {
+  const isFirstRender = useRef(true);
+  const [refresh, setRefresh] = useState(false);
   navigation = useNavigation(); 
+
+  const GetUserList = useCallback(async () => {
+        try {
+          const resp = await axios
+            .get("https://www.thinkmoveresources.com/mst_user/user_list")
+            .then((response) => {
+              // const data = response.data;
+              setPets(response.data);
+              setFullData(response.data);
+              setIsLoading(false);
+            });
+        } catch (err) {
+          // Handle Error Here
+          console.error(err);
+        }
+  });
+
   useEffect(() => {
-    // setShowEditAlert(false);
-    // setShowDeleteAlert(false);
-    setIsLoading(true);
-    axios({
-      method: "get",
-      url: "https://www.thinkmoveresources.com/mst_user/user_list",
-    })
-      .then(function (response) {
-        console.log(response.data);
-        // setData(response.data);
-        setPets(response.data);
-        setFullData(response.data);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setIsLoading(false);
-        setError(err);
-      });
-  }, []);
+    GetUserList();
+    return () => console.log("unmount");
+  }, [GetUserList]);
+  // useEffect(() => {     
+  //   const GetUserList = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       const resp = await axios
+  //         .get("https://www.thinkmoveresources.com/mst_user/user_list")
+  //         .then((response) => {
+  //           // const data = response.data;
+  //           setPets(response.data);
+  //           setFullData(response.data);
+  //           setIsLoading(false);
+  //         });
+  //     } catch (err) {
+  //       // Handle Error Here
+  //       console.error(err);
+  //     }
+  //   };
+  //   GetUserList();
+  // }, []);
   const [columns, setColumns] = useState([
     "user_id",
     "user_first_name",

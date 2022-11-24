@@ -316,6 +316,10 @@ useEffect(() => {
 
     return false;
   };
+  const getItem = (item) => {
+    //Function for click on an item
+    alert("user_id : " + item.user_id + " user_email : " + item.user_email);
+  };
   return (
     <View style={styles.container}>
       <View
@@ -348,6 +352,7 @@ useEffect(() => {
         keyExtractor={(item, index) => index + ""}
         ListHeaderComponent={tableHeader}
         stickyHeaderIndices={[0]}
+        
         renderItem={({ item, index }) => {
           return (
             <View
@@ -356,7 +361,9 @@ useEffect(() => {
                 backgroundColor: index % 2 == 1 ? "#F0FBFC" : "white",
               }}
             >
-              <Text style={styles.columnRowTxt}>{item.user_id}</Text>
+              <Text style={styles.columnRowTxt} onPress={() => getItem(item)}>
+                {item.user_id}
+              </Text>
               <Text style={{ ...styles.columnRowTxt, fontWeight: "bold" }}>
                 {item.user_first_name}
               </Text>

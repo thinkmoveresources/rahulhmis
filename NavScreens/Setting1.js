@@ -21,15 +21,43 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 export default function Setting1({ navigation }) {
   const isFirstRender = useRef(true);
   const [refresh, setRefresh] = useState(false);
+   
   navigation = useNavigation(); 
 
-  const GetUserList = useCallback(async () => {
-        try {
-          const resp = await axios
+  // const GetUserList = useCallback(async () => {
+  //       try {
+  //         const resp = await axios
+  //           .get("https://www.thinkmoveresources.com/mst_user/user_list")
+  //           .then((response) => {
+  //             // const data = response.data;
+  //             setPets(response.data);
+  //             setFullData(response.data);
+  //             setIsLoading(false);
+  //           });
+  //       } catch (err) {
+  //         // Handle Error Here
+  //         console.error(err);
+  //       }
+  // });
+
+  // useEffect(() => {
+  //   GetUserList();
+  //   return () => console.log("unmount");
+    
+  // }, [GetUserList]);
+  const isFocused=useIsFocused();
+
+let data1 = [];
+const innerFunction = useCallback(() => {
+  
+  try {
+          const resp = axios
             .get("https://www.thinkmoveresources.com/mst_user/user_list")
             .then((response) => {
-              // const data = response.data;
+                data1 = response.data;
+              
               setPets(response.data);
+              // console.log(pets[user_id]);
               setFullData(response.data);
               setIsLoading(false);
             });
@@ -37,31 +65,51 @@ export default function Setting1({ navigation }) {
           // Handle Error Here
           console.error(err);
         }
-  });
+},[isFocused]);
 
-  useEffect(() => {
-    GetUserList();
-    return () => console.log("unmount");
-  }, [GetUserList]);
-  // useEffect(() => {     
-  //   const GetUserList = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       const resp = await axios
-  //         .get("https://www.thinkmoveresources.com/mst_user/user_list")
-  //         .then((response) => {
-  //           // const data = response.data;
-  //           setPets(response.data);
-  //           setFullData(response.data);
-  //           setIsLoading(false);
-  //         });
-  //     } catch (err) {
-  //       // Handle Error Here
-  //       console.error(err);
-  //     }
-  //   };
+useEffect(() => {
+  innerFunction();
+  // The effect calls innerFunction, hence it should declare it as a dependency
+  // Otherwise, if something about innerFunction changes (e.g. the data it uses), the effect would run the outdated version of innerFunction
+}, [innerFunction]);
+
+//  const isFirstRef = useRef(true);
+  const [pets, setPets] = useState([]);
+//     const GetUserList = async () => {
+//       console.log({isFirstRef})
+//        if (isFirstRef.current) {
+//          isFirstRef.current = false;
+//          return;
+//        }
+//          console.log("First Time Run");
+
+//          setIsLoading(true);
+//          try {
+//            const resp = await axios
+//              .get("https://www.thinkmoveresources.com/mst_user/user_list")
+//              .then((response) => {
+//                // const data = response.data;
+//                setPets(response.data);
+//                setFullData(response.data);
+//                setIsLoading(false);
+//              });
+//          } catch (err) {
+//            // Handle Error Here
+//            console.error(err);
+//          }
+       
+//   };
+
+
+//   // useEffect(() => {
   //   GetUserList();
   // }, []);
+  // useEffect(() => {
+  //   GetUserList();
+  // }, [pets]);
+  // useEffect(() => {
+  //   console.log(pets);
+  // }, [pets]);
   const [columns, setColumns] = useState([
     "user_id",
     "user_first_name",
@@ -73,7 +121,7 @@ export default function Setting1({ navigation }) {
   const [selectedColumn, setSelectedColumn] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [pets, setPets] = useState([]);
+ 
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
   const [fullData, setFullData] = useState([]);

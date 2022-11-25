@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useCallback,useState, useRef, useEffect } from "react";
+import React, { useCallback, useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -17,12 +17,12 @@ import _ from "lodash";
 import axios from "axios";
 import filter from "lodash.filter";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-
+import { Example } from "../App_modal";
 export default function Setting1({ navigation }) {
   const isFirstRender = useRef(true);
   const [refresh, setRefresh] = useState(false);
-   
-  navigation = useNavigation(); 
+
+  navigation = useNavigation();
 
   // const GetUserList = useCallback(async () => {
   //       try {
@@ -43,65 +43,63 @@ export default function Setting1({ navigation }) {
   // useEffect(() => {
   //   GetUserList();
   //   return () => console.log("unmount");
-    
+
   // }, [GetUserList]);
-  const isFocused=useIsFocused();
+  const isFocused = useIsFocused();
 
-let data1 = [];
-const innerFunction = useCallback(() => {
-  
-  try {
-          const resp = axios
-            .get("https://www.thinkmoveresources.com/mst_user/user_list")
-            .then((response) => {
-                data1 = response.data;
-              
-              setPets(response.data);
-              // console.log(pets[user_id]);
-              setFullData(response.data);
-              setIsLoading(false);
-            });
-        } catch (err) {
-          // Handle Error Here
-          console.error(err);
-        }
-},[isFocused]);
+  let data1 = [];
+  const innerFunction = useCallback(() => {
+    try {
+      const resp = axios
+        .get("https://www.thinkmoveresources.com/mst_user/user_list")
+        .then((response) => {
+          data1 = response.data;
 
-useEffect(() => {
-  innerFunction();
-  // The effect calls innerFunction, hence it should declare it as a dependency
-  // Otherwise, if something about innerFunction changes (e.g. the data it uses), the effect would run the outdated version of innerFunction
-}, [innerFunction]);
+          setPets(response.data);
+          // console.log(pets[user_id]);
+          setFullData(response.data);
+          setIsLoading(false);
+        });
+    } catch (err) {
+      // Handle Error Here
+      console.error(err);
+    }
+  }, [isFocused]);
 
-//  const isFirstRef = useRef(true);
+  useEffect(() => {
+    innerFunction();
+    // The effect calls innerFunction, hence it should declare it as a dependency
+    // Otherwise, if something about innerFunction changes (e.g. the data it uses), the effect would run the outdated version of innerFunction
+  }, [innerFunction]);
+
+  //  const isFirstRef = useRef(true);
   const [pets, setPets] = useState([]);
-//     const GetUserList = async () => {
-//       console.log({isFirstRef})
-//        if (isFirstRef.current) {
-//          isFirstRef.current = false;
-//          return;
-//        }
-//          console.log("First Time Run");
+  //     const GetUserList = async () => {
+  //       console.log({isFirstRef})
+  //        if (isFirstRef.current) {
+  //          isFirstRef.current = false;
+  //          return;
+  //        }
+  //          console.log("First Time Run");
 
-//          setIsLoading(true);
-//          try {
-//            const resp = await axios
-//              .get("https://www.thinkmoveresources.com/mst_user/user_list")
-//              .then((response) => {
-//                // const data = response.data;
-//                setPets(response.data);
-//                setFullData(response.data);
-//                setIsLoading(false);
-//              });
-//          } catch (err) {
-//            // Handle Error Here
-//            console.error(err);
-//          }
-       
-//   };
+  //          setIsLoading(true);
+  //          try {
+  //            const resp = await axios
+  //              .get("https://www.thinkmoveresources.com/mst_user/user_list")
+  //              .then((response) => {
+  //                // const data = response.data;
+  //                setPets(response.data);
+  //                setFullData(response.data);
+  //                setIsLoading(false);
+  //              });
+  //          } catch (err) {
+  //            // Handle Error Here
+  //            console.error(err);
+  //          }
 
+  //   };
 
-//   // useEffect(() => {
+  //   // useEffect(() => {
   //   GetUserList();
   // }, []);
   // useEffect(() => {
@@ -121,7 +119,7 @@ useEffect(() => {
   const [selectedColumn, setSelectedColumn] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
- 
+
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
   const [fullData, setFullData] = useState([]);
@@ -318,6 +316,7 @@ useEffect(() => {
   };
   const getItem = (item) => {
     //Function for click on an item
+
     alert("user_id : " + item.user_id + " user_email : " + item.user_email);
   };
   return (
@@ -352,7 +351,6 @@ useEffect(() => {
         keyExtractor={(item, index) => index + ""}
         ListHeaderComponent={tableHeader}
         stickyHeaderIndices={[0]}
-        
         renderItem={({ item, index }) => {
           return (
             <View

@@ -236,16 +236,33 @@ const styles = StyleSheet.create({
     height: 30,
   },
   // Dynamic Form Styles
- commonView: {
+  dny_commonView: {
     width: "50%",
     height: 50,
-    flexDirection:"row",
-    alignSelf:'center',
-    borderRadius:10,
-    borderWidth:.5,
-    paddingLeft:20,
-    borderColor:"pink",
-    marginTop:10
+    flexDirection: "row",
+    alignSelf: "center",
+    borderRadius: 10,
+    borderWidth: 3,
+    paddingLeft: 20,
+    borderColor: "pink",
+    marginTop: 10,
+  },
+  dny_button: {
+    width: 200,
+    height: 50,
+    padding: 10,
+    backgroundColor: "#ff9999",
+    borderWidth: 2,
+    borderColor: "white",
+    borderRadius: 15,
+    alignSelf: "center",
+    margin: "2%",
+  },
+  dny_buttonText: {
+    fontSize: 20,
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 export { styles };

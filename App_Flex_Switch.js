@@ -94,7 +94,7 @@ export default function App() {
           backgroundColor: "#fff",
           flex: 1,
         }}
-      >
+        >
         <Text
           style={{
             textAlign: "center", // <-- the magic
@@ -105,7 +105,7 @@ export default function App() {
             backgroundColor: "#3ab8ee",
             padding: "1%",
           }}
-        >
+          >
           Personel Info1
           <Switch
             style={{ marginTop: 30 }}

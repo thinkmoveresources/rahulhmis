@@ -217,6 +217,36 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: "white",
   },
+  //Bottom View
+  bottomView: {
+    width: "90%",
+    height: 60,
+    borderRadius: 10,
+    elevation: 5,
+    position: "absolute",
+    bottom: 20,
+    backgroundColor: "#FFF3E0",
+    alignSelf: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  bottomIcon: {
+    width: 30,
+    height: 30,
+  },
+  // Dynamic Form Styles
+ commonView: {
+    width: "50%",
+    height: 50,
+    flexDirection:"row",
+    alignSelf:'center',
+    borderRadius:10,
+    borderWidth:.5,
+    paddingLeft:20,
+    borderColor:"pink",
+    marginTop:10
+  },
 });
 export { styles };
 

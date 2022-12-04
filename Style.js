@@ -66,6 +66,26 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 15,
   },
+  validformInput: {
+    width: 200,
+    fontSize: 18,
+    borderWidth: 1,
+    borderColor: "#6ef132",
+    padding: 10,
+    margin: 5,
+    backgroundColor: "white",
+    borderRadius: 15,
+  },
+  invalidformInput: {
+    width: 200,
+    fontSize: 18,
+    borderWidth: 2,
+    borderColor: "#B71C1C",
+    padding: 10,
+    margin: 5,
+    backgroundColor: "white",
+    borderRadius: 15,
+  },
   text: {
     textAlign: "center",
     fontSize: 20,
@@ -236,9 +256,9 @@ const styles = StyleSheet.create({
     height: 30,
   },
   // Dynamic Form Styles
-  dny_commonView: {
-    width: "50%",
-    height: 50,
+  dny_commonView_txt: {
+    width: "20%",
+    height: 20,
     flexDirection: "row",
     alignSelf: "center",
     borderRadius: 10,
@@ -263,6 +283,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  fl_rw_spbtwn: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 20,
   },
 });
 export { styles };

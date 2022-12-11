@@ -14,13 +14,19 @@ import {
   UIManager,
   TouchableOpacity,
   Platform,
-  TextInput
+  TextInput,
 } from "react-native";
+
 import validate from "./Screen/Components/ValidateInputs";
-const ExpandableComponent = ({ item, onClickFunction,listDataSource }) => {
+const ExpandableComponent = ({
+  item,
+  onClickFunction,
+  listDataSource,
+  isValidForm,
+}) => {
   //Custom Component for the Expandable List
   const [layoutHeight, setLayoutHeight] = useState(0);
-const [inputText, setInputText] = useState();
+  const [inputText, setInputText] = useState();
   useEffect(() => {
     if (item.isExpanded) {
       setLayoutHeight(null);
@@ -28,38 +34,67 @@ const [inputText, setInputText] = useState();
       setLayoutHeight(0);
     }
   }, [item.isExpanded]);
-  const changeText = (txt, item) => {  
-    
-// console.log(listDataSource);
-  const newUpdateMsg = [...CONTENT]; 
-  let tempmsg = validate(
-    newUpdateMsg[item.id - 1].subcategory[item.id - 1].fieldtype,
-    item.id - 1,
-    txt,
-  );
-  // console.log(tempmsg.errors); 
-  // console.log(newUpdateMsg);
-// console.log(newUpdateMsg[item.id - 1].subcategory[item.id - 1]);
-if (tempmsg.errors == "InvalidInput"){
-newUpdateMsg[item.id - 1].subcategory[item.id - 1] = Object.assign(
-  newUpdateMsg[item.id - 1].subcategory[item.id - 1],
-  {
-    badMessage: tempmsg.errors,
-    fieldrequiredfilled: "false",
-  }
-);
-}else{
-  newUpdateMsg[item.id - 1].subcategory[item.id - 1] = Object.assign(
-    newUpdateMsg[item.id - 1].subcategory[item.id - 1],
-    {
-      badMessage: "",
-      fieldrequiredfilled: "true",
-    }
-  );
+  const changeText = (txt, item) => {       
+    const newUpdateMsg = [...CONTENT];
+    let arr_len = Object.keys(newUpdateMsg).length;
+    for (let arrloop = 0; arrloop < arr_len; arrloop++) {
+      // console.log(newUpdateMsg[arrloop]);
+      // console.log("___COsole Loop1 ______");
+      let arr_sub_len = Object.keys(newUpdateMsg[arrloop].subcategory).length;
+      for (let arr_sub_loop = 0; arr_sub_loop < arr_sub_len; arr_sub_loop++) {
+        // console.log(newUpdateMsg[arrloop].subcategory[arr_sub_loop]);
+        if (newUpdateMsg[arrloop].subcategory[arr_sub_loop].id == item.id) {
+          // console.log(newUpdateMsg[arrloop].subcategory[arr_sub_loop].id);
+          // console.log("___COsole Loop2 ______");
+          let tempmsg = validate(
+            newUpdateMsg[arrloop].subcategory[arr_sub_loop].fieldtype,
+            txt,newUpdateMsg[arrloop].subcategory[arr_sub_loop].maxLength
+          );
+          console.log(
+            tempmsg.errors + newUpdateMsg[arrloop].subcategory[arr_sub_loop].fieldtype
+          );
 
-}
-listDataSource(newUpdateMsg);
-};
+          // newUpdateMsg[arrloop].subcategory[arr_sub_loop].badMessage =
+          //   Object.assign(
+          //     newUpdateMsg[arrloop].subcategory[arr_sub_loop].badMessage,
+          //     {
+          //       badMessage: tempmsg.errors,
+          //       // fieldrequiredfilled: "true",
+          //     }
+          //   );
+          //   listDataSource(newUpdateMsg);
+          if (tempmsg.errors != "InvalidInput") {
+            console.log(newUpdateMsg[arrloop].subcategory[arr_sub_loop]);
+            newUpdateMsg[arrloop].subcategory[arr_sub_loop] = Object.assign(
+              newUpdateMsg[arrloop].subcategory[arr_sub_loop],
+              {
+                badMessage: "",
+                fieldrequiredfilled: "true",
+              }
+            );
+            isValidForm("true");
+            listDataSource(newUpdateMsg);
+          } else {
+            newUpdateMsg[arrloop].subcategory[arr_sub_loop] = Object.assign(
+              newUpdateMsg[arrloop].subcategory[arr_sub_loop],
+              {
+                badMessage:
+                  tempmsg.errors +
+                  " For " +
+                  newUpdateMsg[arrloop].subcategory[arr_sub_loop].fieldtype,
+                fieldrequiredfilled: "false",
+              }
+            );
+            isValidForm("false");
+            listDataSource(newUpdateMsg);
+          }
+          return;
+        }
+      }
+    }
+    console.log(newUpdateMsg);
+    listDataSource(newUpdateMsg);
+  };
   return (
     <View>
       {/*Header of the Expandable List Item*/}
@@ -81,37 +116,52 @@ listDataSource(newUpdateMsg);
           <TouchableOpacity
             key={key}
             style={styles.content}
-            onPress={() =>
-              alert(
-                "Id: " +
-                  item.id +
-                  " val: " +
-                  item.val +
-                  " fieldname: " +
-                  item.fieldname
-              )
-            }
+            // onPress={() =>
+            //   alert(
+            //     "Id: " +
+            //       item.id +
+            //       " val: " +
+            //       item.val +
+            //       " fieldname: " +
+            //       item.fieldname
+            //   )
+            // }
           >
             <View>
               {/* Name */}
               {item.field == "TEXT_INPUT" ? (
-                <View>
-                  <TextInput
-                    style={styles.dny_commonView_txt}
-                    placeholder={item.placeholder}
-                    onChangeText={(txt) => changeText(txt, item)}
-                    defaultValue={inputText}
-                    editable={true}
-                  />
-                  {/* <Text>{validate(item.data.fieldName, 'rahul')}</Text> */}
-                   <Text style={{ color: "red" }}>{item.badMessage}</Text>
-                </View>
+                item.fieldrequired == "true" ? (
+                  <View>
+                    <TextInput
+                      style={styles.txt_mandetory}
+                      placeholder={item.placeholder}
+                      onChangeText={(txt) => changeText(txt, item)}
+                      defaultValue={inputText}
+                      editable={true}
+                      required={true}
+                    />
+                    {/* <Text>{validate(item.data.fieldName, 'rahul')}</Text> */}
+                    <Text style={{ color: "red" }}>{item.badMessage}</Text>
+                  </View>
+                ) : (
+                  <View>
+                    <TextInput
+                      style={styles.txt_not_mandetory}
+                      placeholder={item.placeholder}
+                      onChangeText={(txt) => changeText(txt, item)}
+                      defaultValue={inputText}
+                      editable={true}
+                    />
+                    {/* <Text>{validate(item.data.fieldName, 'rahul')}</Text> */}
+                    <Text style={{ color: "red" }}>{item.badMessage}</Text>
+                  </View>
+                )
               ) : null}
             </View>
-            <Text style={styles.text}>
+            {/* <Text style={styles.text}>
               {key}. {item.val}
               {key}. {item.fieldname}
-            </Text>
+            </Text> */}
             <View style={styles.separator} />
           </TouchableOpacity>
         ))}
@@ -124,7 +174,8 @@ const App = () => {
   const [listDataSource, setListDataSource] = useState(CONTENT);
   const [multiSelect, setMultiSelect] = useState(false);
   const [inputText, setInputText] = useState();
-  
+  const [isValidForm, setIsValidForm] = useState("false");
+
   if (Platform.OS === "android") {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
@@ -150,12 +201,14 @@ const App = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={{ flexDirection: "row", padding: 10 }}>
-          <Text style={styles.titleText}>Expandable List View</Text>
+          <Text style={styles.titleText}>Patient Registration</Text>
           <TouchableOpacity onPress={() => setMultiSelect(!multiSelect)}>
             <Text
               style={{
                 textAlign: "center",
                 justifyContent: "center",
+                fontSize:25,
+                color:"red"
               }}
             >
               {multiSelect
@@ -165,6 +218,16 @@ const App = () => {
           </TouchableOpacity>
         </View>
         <ScrollView>
+          <TouchableOpacity>
+            <Text
+              style={{
+                textAlign: "center",
+                justifyContent: "center",
+              }}
+            >
+              {isValidForm}
+            </Text>
+          </TouchableOpacity>
           {listDataSource.map((item, key) => (
             <ExpandableComponent
               key={item.category_name}
@@ -174,6 +237,7 @@ const App = () => {
               listDataSource={(listDataSource) =>
                 setListDataSource(listDataSource)
               }
+              isValidForm={(isValidForm) => setIsValidForm(isValidForm)}
               item={item}
             />
           ))}
@@ -185,6 +249,42 @@ const App = () => {
 
 export default App;
 const styles = StyleSheet.create({
+  dny_commonView_txt: {
+    // width: "20%",
+    height: 40,
+    // flexDirection: "row",
+    // alignSelf: "center",
+    borderColor: "red",
+    borderRadius: 10,
+    borderWidth: 1,
+    backgroundColor: "#FFEBEE",
+    paddingLeft: 20,
+    marginTop: 10,
+  },
+  txt_mandetory: {
+    // width: "20%",
+    height: 40,
+    // flexDirection: "row",
+    // alignSelf: "center",
+    borderColor: "red",
+    borderRadius: 10,
+    borderWidth: 1,
+    backgroundColor: "#FFEBEE",
+    paddingLeft: 20,
+    marginTop: 10,
+  },
+  txt_not_mandetory: {
+    // width: "20%",
+    height: 40,
+    // flexDirection: "row",
+    // alignSelf: "center",
+    borderColor: "green",
+    borderRadius: 10,
+    borderWidth: 1,
+    backgroundColor: "#CCFF90",
+    paddingLeft: 20,
+    marginTop: 10,
+  },
   container: {
     flex: 1,
   },
@@ -226,45 +326,156 @@ const styles = StyleSheet.create({
 const CONTENT = [
   {
     isExpanded: false,
-    category_name: "Personal_info",
+    category_name: "Personal_info1",
     subcategory: [
       {
         id: 1,
+        itemgroup: "Personal_info1",
         val: "Sub Cat 1",
         field: "TEXT_INPUT",
         fieldtype: "email",
-        fieldrequired: "false",
-        fieldrequiredfilled: "false",        
-        fieldname: "Surname",
+        fieldrequired: "true",
+        fieldrequiredfilled: "false",
+        fieldname: "Surname 1_1 ",
         placeholder: "Enter Name",
-        maxLength: 50,        
+        maxLength: 50,
+        badMessage: "",
+      },
+      {
+        id: 2,
+        itemgroup: "Personal_info1",
+        val: "Sub Cat 2",
+        field: "TEXT_INPUT",
+        fieldtype: "numeric",
+        fieldrequired: "true",
+        fieldrequiredfilled: "false",
+        fieldname: "Surname 1_2 ",
+        placeholder: "numeric",
+        maxLength: 5,
+        badMessage: "",
+      },
+      {
+        id: 9,
+        itemgroup: "Personal_info1",
+        val: "Sub Cat 9",
+        field: "TEXT_INPUT",
+        fieldtype: "NoSpace",
+        fieldrequired: "false",
+        fieldrequiredfilled: "false",
+        fieldname: "Surname 1_1 ",
+        placeholder: "NoSpace",
+        maxLength: 50,
         badMessage: "",
       },
     ],
   },
   {
     isExpanded: false,
-    category_name: "Item 1",
-    mainid: "Item 1",
+    category_name: "Personal_info2",
     subcategory: [
-      { id: 2, val: "Sub Cat 1" },
-      { id: 3, val: "Sub Cat 2" },
+      {
+        id: 3,
+        itemgroup: "Personal_info2",
+        val: "Sub Cat 3",
+        field: "TEXT_INPUT",
+        fieldtype: "OnlyCharacter",
+        fieldrequired: "false",
+        fieldrequiredfilled: "false",
+        fieldname: "Surname 2_1",
+        placeholder: "OnlyCharacter",
+        maxLength: 50,
+        badMessage: "",
+      },
+      {
+        id: 4,
+        itemgroup: "Personal_info2",
+        val: "Sub Cat 4",
+        field: "TEXT_INPUT",
+        fieldtype: "AlphaNum",
+        fieldrequired: "false",
+        fieldrequiredfilled: "false",
+        fieldname: "Surname 2_2",
+        placeholder: "Alpha Num",
+        maxLength: 50,
+        badMessage: "",
+      },
+      {
+        id: 10,
+        itemgroup: "Personal_info2",
+        val: "Sub Cat 4",
+        field: "TEXT_INPUT",
+        fieldtype: "email",
+        fieldrequired: "false",
+        fieldrequiredfilled: "false",
+        fieldname: "Surname 2_2",
+        placeholder: "Enter other details",
+        maxLength: 50,
+        badMessage: "",
+      },
     ],
   },
   {
     isExpanded: false,
-    category_name: "Item 2",
+    category_name: "Personal_info3",
     subcategory: [
-      { id: 4, val: "Sub Cat 1" },
-      { id: 5, val: "Sub Cat 2" },
+      {
+        id: 5,
+        itemgroup: "Personal_info3",
+        val: "Sub Cat 3",
+        field: "TEXT_INPUT",
+        fieldtype: "email",
+        fieldrequired: "false",
+        fieldrequiredfilled: "false",
+        fieldname: "Surname 2_1",
+        placeholder: "Enter Name",
+        maxLength: 50,
+        badMessage: "",
+      },
+      {
+        id: 6,
+        itemgroup: "Personal_info3",
+        val: "Sub Cat 4",
+        field: "TEXT_INPUT",
+        fieldtype: "email",
+        fieldrequired: "false",
+        fieldrequiredfilled: "false",
+        fieldname: "Surname 2_2",
+        placeholder: "Enter Name",
+        maxLength: 50,
+        badMessage: "",
+      },
     ],
   },
   {
     isExpanded: false,
-    category_name: "Item 3",
+    category_name: "Personal_info4",
     subcategory: [
-      { id: 7, val: "Sub Cat 1" },
-      { id: 9, val: "Sub Cat 2" },
+      {
+        id: 7,
+        itemgroup: "Personal_info4",
+        val: "Sub Cat 3",
+        field: "TEXT_INPUT",
+        fieldtype: "email",
+        fieldrequired: "false",
+        fieldrequiredfilled: "false",
+        fieldname: "Surname 2_1",
+        placeholder: "Enter Name",
+        maxLength: 50,
+        badMessage: "",
+      },
+      {
+        id: 8,
+        itemgroup: "Personal_info4",
+        val: "Sub Cat 4",
+        field: "TEXT_INPUT",
+        fieldtype: "email",
+        fieldrequired: "false",
+        fieldrequiredfilled: "false",
+        fieldname: "Surname 2_2",
+        placeholder: "Enter Name",
+        maxLength: 50,
+        badMessage: "",
+      },
     ],
   },
 ];

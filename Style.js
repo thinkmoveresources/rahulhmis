@@ -261,10 +261,10 @@ const styles = StyleSheet.create({
     height: 20,
     flexDirection: "row",
     alignSelf: "center",
+     backgroundColor: "#26A69A",
     borderRadius: 10,
-    borderWidth: 3,
-    paddingLeft: 20,
-    borderColor: "pink",
+    borderWidth: 3,   
+    paddingLeft: 20,   
     marginTop: 10,
   },
   dny_button: {

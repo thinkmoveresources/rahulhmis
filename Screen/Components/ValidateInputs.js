@@ -1,11 +1,11 @@
-const validate = (inputs,ind,txt) => {
-  console.log(inputs);
+const validate = (inputs,txt,fieldlenght) => {
+  // console.log(inputs);
   // const fieldtype = inputs[ind].fieldtype;
   const fieldtype = inputs;
   // console.log(fieldtype);
   // const inputText = inputs[ind].title;
   const inputText = txt;
-  console.log(inputText);
+  // console.log(inputText);
   // console.log("Values in Inputs Variable" + fieldtype);
   // /^[a-zA-Z]+$/; ****** only add charaters
   // chekc legnth using (input.length < 5)
@@ -24,20 +24,40 @@ const validate = (inputs,ind,txt) => {
     } else {
       errors.errors = "InvalidInput";
     }
+  } else if (fieldtype == "numeric") {
+    var mailformat = /\D/;
+
+    if (!mailformat.test(inputText)) {
+      errors.errors = "Valid Email";
+    } else {
+      errors.errors = "InvalidInput";
+    }
+  } else if (fieldtype == "NoSpace") {
+    var mailformat = /^(?:(\w)(?!\1\1))+$/;
+
+    if (mailformat.test(inputText)) {
+      errors.errors = "Valid Email";
+    } else {
+      errors.errors = "InvalidInput";
+    }
+  } else if (fieldtype == "OnlyCharacter") {
+    var mailformat = /^[A-Za-z\s]*$/;
+
+    if (mailformat.test(inputText)) {
+      errors.errors = "Valid Email";
+    } else {
+      errors.errors = "InvalidInput";
+    }
+  } else if (fieldtype == "AlphaNum") {
+    var mailformat = /^([a-zA-Z0-9_-])+$/;
+
+    if (mailformat.test(inputText)) {
+      errors.errors = "Valid Email";
+    } else {
+      errors.errors = "InvalidInput";
+    }
   }
-  //   if (!fieldtype_email=='email') {
-  //     errors.email = "Check Email";
-  //   } else if (
-  //     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(inputs.fieldtype_email)
-  //   ) {
-  //     errors.email = "Invalid email address";
-  //   }
-  //   //Password Errors
-  // //   if (!inputs.password || inputs.password.length < 6) {
-  // //     errors.password = "Check Password";
-  // //   }
-  //   console.log(errors.email);
-  console.log(errors);
+  
   return errors;
 };
 export default validate;

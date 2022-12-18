@@ -49,8 +49,8 @@ const SingleDatePage =({temp_date})=>{
 const styles = StyleSheet.create({ 
   date_text: {
     // lineHeight: "1.5em",
-    fontSize: "1.125rem",
-    marginVertical: ".5rem",
+    fontSize: 20,
+    marginVertical: 10,
     // textAlign: "center",
     height: 20,
     backgroundColor: "aqua",

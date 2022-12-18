@@ -3,6 +3,7 @@
 
 // Import React
 import React, { useEffect, useState } from "react";
+import { NativeModules } from "react-native";
 // Import required components
 import {
   SafeAreaView,
@@ -17,6 +18,8 @@ import {
   TextInput,
   Button,
 } from "react-native";
+import "intl";
+import "intl/locale-data/jsonp/en";
 // Dropdown dependancies
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -33,6 +36,30 @@ import RadioGroup from "react-native-radio-buttons-group";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import {
+  // en,
+  // nl,
+  // de,
+  // pl,
+  // pt,
+  // ar,
+  // ko
+  // fr
+  // it,
+  enGB,
+  registerTranslation,
+} from "react-native-paper-dates";
+// registerTranslation('en', en)
+// registerTranslation('nl', nl)
+// registerTranslation('fr', fr)
+// registerTranslation('pl', pl)
+// registerTranslation('pt', pt)
+// registerTranslation('de', de)
+// registerTranslation('ar', ar)
+// registerTranslation('ko', ko)
+// registerTranslation('fr', fr)
+// registerTranslation('it', it)
+registerTranslation("en-GB", enGB);
+import {
   DatePickerModal,
   DatePickerModalContent,
   TimePickerModal,
@@ -42,7 +69,8 @@ import {
 import {
   useTheme
 } from "react-native-paper";
-const locale = "en-GB";
+import { getLocales, getCalendars } from "expo-localization";
+
 const ExpandableComponent = ({
   item,
   onClickFunction,
@@ -51,6 +79,9 @@ const ExpandableComponent = ({
   Value1,
   isFocus,
 }) => {
+  // const locale = NativeModules.I18nManager;
+  // console.log(locale)
+  const locale = "en-GB";
   // console.log(item);
   //   Array Loop for Radio Button
   //   console.log("Start")
@@ -330,7 +361,7 @@ const ExpandableComponent = ({
                             style={styles.icon}
                             color={isFocus ? "blue" : "black"}
                             name="Safety"
-                            size={20}
+                            // size={20}
                           />
                         )}
                       />
@@ -499,9 +530,10 @@ const ExpandableComponent = ({
                         // keyboardIcon="keyboard-outline" // optional, default is "keyboard-outline"
                         // clockIcon="clock-outline" // optional, default is "clock-outline"
                       />
-                      <Button onPress={() => setVisible(true)}>
-                        Pick time
-                      </Button>
+                      <Button
+                        title="Press Me"
+                        onPress={() => setVisible(true)}
+                      ></Button>
                     </>
                   ) : (
                     // If Field is not required make it green
@@ -801,8 +833,8 @@ const styles = StyleSheet.create({
   },
   date_text: {
     // lineHeight: "1.5em",
-    fontSize: "1.125rem",
-    marginVertical: "1rem",
+    fontSize: 20,
+    marginVertical: 20,
     // textAlign: "center",
     height: 36,
     backgroundColor: "aqua",

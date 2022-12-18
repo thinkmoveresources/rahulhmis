@@ -20,8 +20,6 @@ import {
 // Dropdown dependancies
 import { Dropdown } from "react-native-element-dropdown";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import Icon from "react-native-vector-icons/FontAwesome";
-import SingleDatePage from "./Screen/Components/SingleDatePage";
 // *************
 import validate from "./Screen/Components/ValidateInputs";
 // Check Box
@@ -29,20 +27,10 @@ import { CheckBox } from "react-native-elements";
 // ****************
 // Radio Button
 import RadioGroup from "react-native-radio-buttons-group";
-// Date Time
+// Date Time 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import {
-  DatePickerModal,
-  DatePickerModalContent,
-  TimePickerModal,
-  DatePickerInput,
-  // @ts-ignore TODO: try to fix expo to work with local library
-} from "react-native-paper-dates";
-import {
-  useTheme
-} from "react-native-paper";
-const locale = "en-GB";
+import { DatePickerModal } from "react-native-paper-dates";
 const ExpandableComponent = ({
   item,
   onClickFunction,
@@ -51,18 +39,16 @@ const ExpandableComponent = ({
   Value1,
   isFocus,
 }) => {
-  // console.log(item);
-  //   Array Loop for Radio Button
-  //   console.log("Start")
-  //   let arr_item_len = Object.keys(item.subcategory).length;
-  //     for (let arrloop = 0; arrloop < arr_item_len; arrloop++) {
-  //       // console.log(newUpdateMsg[arrloop]);}
-  //       if (item.subcategory[arrloop].temp_date){
-  //         console.log("________")
-  //         console.log(item.subcategory[arrloop].temp_date);
-  //       }
+  // Array Loop for Radio Button
+  // console.log("Start")
+  // let arr_item_len = Object.keys(item.subcategory).length;
+  //   for (let arrloop = 0; arrloop < arr_item_len; arrloop++) {
+  //     // console.log(newUpdateMsg[arrloop]);}
+  //     if (item.subcategory[arrloop].radioButtonsData){
+  //       console.log(item.subcategory[arrloop].radioButtonsData);
   //     }
-  //   console.log("End");
+  //   }
+    // console.log("End");
   //Custom Component for the Expandable List
   const [layoutHeight, setLayoutHeight] = useState(0);
   const [inputText, setInputText] = useState();
@@ -85,8 +71,7 @@ const ExpandableComponent = ({
   // }
   // ********
   const handleOnChangeRadio = (event, item) => {
-    console.log(item);
-    console.log(event);
+    console.log(item)
     item.checked = !item.checked;
     setCheckalue((s) => {
       const newArr = s.slice();
@@ -94,41 +79,6 @@ const ExpandableComponent = ({
       return newArr;
     });
   };
-  //   **************Handle date
-  const [inputDate, setInputDate] = useState();
-  const handleOnChangeDate = (inputDate, event, item) => {
-    item.temp_date = inputDate;
-    setCheckalue((s) => {
-      const newArr = s.slice();
-      newArr[item.temp_date] = event;
-      return newArr;
-    });
-  };
-  function Row({ children }: { children: any }) {
-    return <View style={styles.row}>{children}</View>;
-  }
-
-  function Label({ children }: { children: string }) {
-    const theme = useTheme();
-    return (
-      <Text style={[styles.label, { ...theme.fonts.medium }]}>{children}</Text>
-    );
-  }
-  // *************************
-  //   **************Handle time
-  const [visible, setVisible] =useState(false);
-  const onDismiss = React.useCallback(() => {
-    setVisible(false);
-  }, [setVisible]);
-
-  const onConfirm = React.useCallback(
-    ({ hours, minutes }) => {
-      setVisible(false);
-      console.log({ hours, minutes });
-    },
-    [setVisible]
-  );
-// **************************************
   useEffect(() => {
     if (item.isExpanded) {
       setLayoutHeight(null);
@@ -426,106 +376,11 @@ const ExpandableComponent = ({
                     <View style={styles.drp_container}>
                       <RadioGroup
                         radioButtons={item.radioButtonsData}
-                        // onPress={onPressRadioButton}
-                        onPress={(e) => handleOnChangeRadio(e, item)}
+                        onPress={onPressRadioButton}
                         layout="row"
                       />
                       <Text style={{ color: "red" }}>{item.badMessage}</Text>
                     </View>
-                  )
-                ) : // Date input
-                item.field == "TEXT_date" ? (
-                  // Check if field is required true make it red
-                  item.fieldrequired == "true" ? (
-                    <Row>
-                      <Label>Input</Label>
-                      <DatePickerInput
-                        locale={locale}
-                        value={item.temp_date}
-                        onChange={(e) =>
-                          handleOnChangeDate(e, setInputDate, item)
-                        }
-                        inputMode="start"
-                        validRange={{
-                          startDate: new Date(2022, 6, 1), // optional (2022, 5, 1) means min date jun 1st
-                          endDate: new Date(), // optional
-                          //   disabledDates: [new Date()] // optional
-                          disabledDates: [new Date(2022, 1, 5)], // optional
-                        }}
-                        saveLabelDisabled={true}
-                        autoComplete={"birthdate-full"}
-                      />
-                    </Row>
-                  ) : (
-                    // If Field is not required make it green
-
-                    <Row>
-                      <Label>Input</Label>
-                      <DatePickerInput
-                        locale={locale}
-                        value={item.temp_date}
-                        onChange={(e) =>
-                          handleOnChangeDate(e, setInputDate, item)
-                        }
-                        inputMode="start"
-                        validRange={{
-                          startDate: new Date(2022, 6, 1), // optional (2022, 5, 1) means min date jun 1st
-                          endDate: new Date(), // optional
-                          //   disabledDates: [new Date()] // optional
-                          disabledDates: [new Date(2022, 1, 5)], // optional
-                        }}
-                        saveLabelDisabled={true}
-                        autoComplete={"birthdate-full"}
-                      />
-                    </Row>
-                  )
-                ) : // Date Time
-                item.field == "TEXT_time" ? (
-                  // Check if field is required true make it red
-                  item.fieldrequired == "true" ? (
-                    <>
-                      <TimePickerModal
-                        visible={visible}
-                        onDismiss={onDismiss}
-                        onConfirm={onConfirm}
-                        hours={12} // default: current hours
-                        minutes={14} // default: current minutes
-                        label="Select time" // optional, default 'Select time'
-                        uppercase={false} // optional, default is true
-                        cancelLabel="Cancel" // optional, default: 'Cancel'
-                        confirmLabel="Ok" // optional, default: 'Ok'
-                        animationType="fade" // optional, default is 'none'
-                        locale="en" // optional, default is automically detected by your system
-                        // keyboardIcon="keyboard-outline" // optional, default is "keyboard-outline"
-                        // clockIcon="clock-outline" // optional, default is "clock-outline"
-                      />
-                      <Button onPress={() => setVisible(true)}>
-                        Pick time
-                      </Button>
-                    </>
-                  ) : (
-                    // If Field is not required make it green
-
-                    <>
-                      <TimePickerModal
-                        visible={visible}
-                        onDismiss={onDismiss}
-                        onConfirm={onConfirm}
-                        hours={12} // default: current hours
-                        minutes={14} // default: current minutes
-                        label="Select time" // optional, default 'Select time'
-                        uppercase={false} // optional, default is true
-                        cancelLabel="Cancel" // optional, default: 'Cancel'
-                        confirmLabel="Ok" // optional, default: 'Ok'
-                        animationType="fade" // optional, default is 'none'
-                        locale="en" // optional, default is automically detected by your system
-                        // keyboardIcon="keyboard-outline" // optional, default is "keyboard-outline"
-                        // clockIcon="clock-outline" // optional, default is "clock-outline"
-                      />
-                      <Button onPress={() => setVisible(true)}>
-                        Pick time
-                      </Button>
-                    </>
                   )
                 ) : //   If not Any input Type
                 null
@@ -553,24 +408,23 @@ const App = () => {
   const [multiSelect, setMultiSelect] = useState(false);
   const [inputText, setInputText] = useState();
   const [isValidForm, setIsValidForm] = useState("false");
-  // ******************************************
-//   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [temp_date, setTemp_date] = useState();
+// ******************************************
+const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-//   const showDatePicker = () => {
-//     setDatePickerVisibility(true);
-//   };
 
-//   const hideDatePicker = () => {
-//     setDatePickerVisibility(false);
-//     x;
-//   };
+const showDatePicker = () => {
+  setDatePickerVisibility(true);
+};
 
-//   const handleConfirm = (date) => {
-//     console.warn("A date has been picked: ", date);
-//     hideDatePicker();
-//   };
-  // ************************************
+const hideDatePicker = () => {
+  setDatePickerVisibility(false);x
+};
+
+const handleConfirm = (date) => {
+  console.warn("A date has been picked: ", date);
+  hideDatePicker();
+};
+// ************************************
   if (Platform.OS === "android") {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
@@ -591,11 +445,11 @@ const App = () => {
     }
     setListDataSource(array);
   };
-  const [radioButtons, setRadioButtons] = useState(radioButtonsData);
+const [radioButtons, setRadioButtons] = useState(radioButtonsData);
 
-  function onPressRadioButton(radioButtonsArray) {
-    setRadioButtons(radioButtonsArray);
-  }
+function onPressRadioButton(radioButtonsArray) {
+  setRadioButtons(radioButtonsArray);
+}
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -638,27 +492,15 @@ const App = () => {
               layout="row"
             />
           </TouchableOpacity>
-
-          {/* <Button title="Show Date Picker" onPress={showDatePicker} />
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={handleConfirm}
-            onCancel={hideDatePicker}
-          /> */}
-          {/* Date IMP */}
-          <View style={styles.element_container}>
-            <SingleDatePage
-              temp_date={(temp_date) => setTemp_date(temp_date)}
+          
+            <Button title="Show Date Picker" onPress={showDatePicker} />
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="date"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
             />
-            <TextInput
-              style={styles.date_text}
-              autoCorrect={false}
-              value={temp_date}
-              placeholder="Select Registration Date"
-            />
-          </View>
-          {/* Date End */}
+          
           {listDataSource.map((item, key) => (
             <ExpandableComponent
               key={item.category_name}
@@ -799,23 +641,6 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  date_text: {
-    // lineHeight: "1.5em",
-    fontSize: "1.125rem",
-    marginVertical: "1rem",
-    // textAlign: "center",
-    height: 36,
-    backgroundColor: "aqua",
-    textAlign: "center",
-  },
-  element_container: {
-    flexDirection: "row",
-    borderBottomWidth: 0,
-    borderColor: "#fff",
-    alignItems: "center",
-  },
-  row: { width: 100,paddingTop: 5, paddingBottom: 5,  flexDirection: "row" },
-  label: { width: 100, fontSize: 16 },
 });
 
 //Dummy content to show
@@ -891,54 +716,6 @@ const CONTENT = [
             value: "option2",
           },
         ],
-      },
-      {
-        id: 32,
-        itemgroup: "Personal_info1",
-        val: "Sub Cat 1",
-        field: "TEXT_date",
-        fieldtype: "email",
-        fieldrequired: "false",
-        fieldrequiredfilled: "false",
-        fieldname: "Surname 1_1 ",
-        placeholder: "Enter Reg Date",
-        temp_date: new Date(),
-        maxLength: 50,
-        checked: true,
-        badMessage: "",
-        inputDate: "",
-      },
-      {
-        id: 33,
-        itemgroup: "Personal_info1",
-        val: "Sub Cat 1",
-        field: "TEXT_date",
-        fieldtype: "email",
-        fieldrequired: "true",
-        fieldrequiredfilled: "false",
-        fieldname: "Surname 1_1 ",
-        placeholder: "Enter DOB",
-        temp_date: new Date(),
-        maxLength: 50,
-        checked: true,
-        badMessage: "",
-        inputDate: "",
-      },
-      {
-        id: 34,
-        itemgroup: "Personal_info1",
-        val: "Sub Cat 1",
-        field: "TEXT_time",
-        fieldtype: "email",
-        fieldrequired: "true",
-        fieldrequiredfilled: "false",
-        fieldname: "Surname 1_1 ",
-        placeholder: "Enter DOB",
-        temp_date: new Date(),
-        maxLength: 50,
-        checked: true,
-        badMessage: "",
-        inputDate: "",
       },
       {
         id: 20,

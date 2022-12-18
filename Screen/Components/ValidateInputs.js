@@ -1,8 +1,8 @@
 const validate = (inputs,txt,fieldlenght) => {
-  // console.log(inputs);
+  console.log(txt);
   // const fieldtype = inputs[ind].fieldtype;
   const fieldtype = inputs;
-  // console.log(fieldtype);
+  console.log(fieldtype);
   // const inputText = inputs[ind].title;
   const inputText = txt;
   // console.log(inputText);

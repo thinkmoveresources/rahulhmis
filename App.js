@@ -36,28 +36,23 @@ import RadioGroup from "react-native-radio-buttons-group";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import {
-  // en,
-  // nl,
-  // de,
-  // pl,
-  // pt,
-  // ar,
-  // ko
-  // fr
-  // it,
+  en,
+  nl,
+  de,
+  pl,
+  pt,
+  ar,
+  ko,
+  fr,
+  it,
   enGB,
   registerTranslation,
 } from "react-native-paper-dates";
-// registerTranslation('en', en)
-// registerTranslation('nl', nl)
-// registerTranslation('fr', fr)
-// registerTranslation('pl', pl)
-// registerTranslation('pt', pt)
-// registerTranslation('de', de)
-// registerTranslation('ar', ar)
-// registerTranslation('ko', ko)
-// registerTranslation('fr', fr)
-// registerTranslation('it', it)
+registerTranslation('en', en)
+registerTranslation('nl', nl)
+registerTranslation('pl', pl)
+registerTranslation('pt', pt)
+registerTranslation('de', de)
 registerTranslation("en-GB", enGB);
 import {
   DatePickerModal,
@@ -81,7 +76,7 @@ const ExpandableComponent = ({
 }) => {
   // const locale = NativeModules.I18nManager;
   // console.log(locale)
-  const locale = "en-GB";
+  const locale = "en";
   // console.log(item);
   //   Array Loop for Radio Button
   //   console.log("Start")

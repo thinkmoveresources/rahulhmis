@@ -4,6 +4,7 @@ import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Dashboard from '../NavScreens/Dashboard';
 import Setting1 from '../NavScreens/Setting1';
+import Registration1 from "../NavScreens/Setting3";
 import Registration from "../NavScreens/Registration";
 import CustomDrawerContent from '../MainNavMenu/CustomDrawerContent.js';
 import {drawerItemsMain} from '../MainNavMenu/drawerItemsMain';
@@ -42,6 +43,18 @@ function Settings2Screen() {
     </View>
   );
 }
+function Settings3Screen() {
+  return (
+    <View style={{ flex: 1, flexDirection: "row" }}>
+      <View style={{ flexWrap: "wrap" }}>
+        <Registration1 />
+      </View>
+      <View style={{ flexWrap: "wrap" }}>
+        <Setting1 />
+      </View>
+    </View>
+  );
+}
 function Registration_call() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>      
@@ -60,6 +73,7 @@ export function MainDrawerNavigation({props}) {
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Settings1" component={Settings1Screen} />
       <Drawer.Screen name="Settings2" component={Settings2Screen} />
+      <Drawer.Screen name="Settings3" component={Settings3Screen} />
       <Drawer.Screen name="Registration" component={Registration_call} />
       {/* <Drawer.Screen name="Userlist" component={UserScreen} />
       <Drawer.Screen name="UserDetails" component={UserDetailScreen} />

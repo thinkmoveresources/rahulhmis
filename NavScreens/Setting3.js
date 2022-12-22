@@ -269,299 +269,302 @@ const ExpandableComponent = ({
       >
         {/*Content under the header of the Expandable List Item*/}
         {item.subcategory.map((item, key) => (
-          <TouchableOpacity
-            key={key}
-            style={styles.content}
-            // onPress={() =>
-            //   alert(
-            //     "Id: " +
-            //       item.id +
-            //       " val: " +
-            //       item.val +
-            //       " fieldname: " +
-            //       item.fieldname
-            //   )
-            // }
-          >
-            <View>
-              {/* Name */}
-              {
-                //   Check 1st Input Type
-                item.field == "TEXT_INPUT" ? (
-                  // Check if field is required true make it red
-                  item.fieldrequired == "true" ? (
-                    <View>
-                      <TextInput
-                        style={styles.txt_mandetory}
-                        placeholder={item.placeholder}
-                        onChangeText={(txt) => changeText(txt, item)}
-                        defaultValue={inputText}
-                        editable={true}
-                        required={true}
-                        maxLength={10}
-                      />
-                      {/* <Text>{validate(item.data.fieldName, 'rahul')}</Text> */}
-                      <Text style={{ color: "red" }}>{item.badMessage}</Text>
-                    </View>
-                  ) : (
-                    // If Field is not required make it green
-                    <View>
-                      <TextInput
-                        style={styles.txt_not_mandetory}
-                        placeholder={item.placeholder}
-                        onChangeText={(txt) => changeText(txt, item)}
-                        defaultValue={inputText}
-                        editable={true}
-                      />
-                      {/* <Text>{validate(item.data.fieldName, 'rahul')}</Text> */}
-                      <Text style={{ color: "red" }}>{item.badMessage}</Text>
-                    </View>
-                  )
-                ) : //   Check Another Input Type
-                item.field == "TEXT_Dropdown" ? (
-                  // Check if field is required true make it red
-                  item.fieldrequired == "true" ? (
-                    <View style={styles.drp_container}>
-                      {renderLabel()}
-                      <Dropdown
-                        style={[
-                          styles.drp_mandetory,
-                          isFocus && { borderColor: "blue" },
-                        ]}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={data}
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder={!isFocus ? "Select item" : "..."}
-                        searchPlaceholder="Search..."
-                        value={Value1}
-                        onFocus={() => isFocus(true)}
-                        onBlur={() => isFocus(false)}
-                        onChange={(Value1) => changeText(Value1, item)}
-                        // onChange={(item,Value1) => {
-                        //   // ******Value(item.value)
+          <ScrollView>
+            <TouchableOpacity
+              key={key}
+              style={styles.content}
+              // onPress={() =>
+              //   alert(
+              //     "Id: " +
+              //       item.id +
+              //       " val: " +
+              //       item.val +
+              //       " fieldname: " +
+              //       item.fieldname
+              //   )
+              // }
+            >
+              <View>
+                {/* Name */}
+                {
+                  //   Check 1st Input Type
+                  item.field == "TEXT_INPUT" ? (
+                    // Check if field is required true make it red
+                    item.fieldrequired == "true" ? (
+                      <View>
+                        <TextInput
+                          style={styles.txt_mandetory}
+                          placeholder={item.placeholder}
+                          onChangeText={(txt) => changeText(txt, item)}
+                          defaultValue={inputText}
+                          editable={true}
+                          required={true}
+                          maxLength={10}
+                        />
+                        {/* <Text>{validate(item.data.fieldName, 'rahul')}</Text> */}
+                        <Text style={{ color: "red" }}>{item.badMessage}</Text>
+                      </View>
+                    ) : (
+                      // If Field is not required make it green
+                      <View>
+                        <TextInput
+                          style={styles.txt_not_mandetory}
+                          placeholder={item.placeholder}
+                          onChangeText={(txt) => changeText(txt, item)}
+                          defaultValue={inputText}
+                          editable={true}
+                        />
+                        {/* <Text>{validate(item.data.fieldName, 'rahul')}</Text> */}
+                        <Text style={{ color: "red" }}>{item.badMessage}</Text>
+                      </View>
+                    )
+                  ) : //   Check Another Input Type
+                  item.field == "TEXT_Dropdown" ? (
+                    // Check if field is required true make it red
+                    item.fieldrequired == "true" ? (
+                      <View style={styles.drp_container}>
+                        {renderLabel()}
+                        <Dropdown
+                          style={[
+                            styles.drp_mandetory,
+                            isFocus && { borderColor: "blue" },
+                          ]}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={data}
+                          search
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          placeholder={!isFocus ? "Select item" : "..."}
+                          searchPlaceholder="Search..."
+                          value={Value1}
+                          onFocus={() => isFocus(true)}
+                          onBlur={() => isFocus(false)}
+                          onChange={(Value1) => changeText(Value1, item)}
+                          // onChange={(item,Value1) => {
+                          //   // ******Value(item.value)
 
-                        //   isFocus(false);
-                        //   // changeText(Value1,item);
-                        // }}
-                        renderLeftIcon={() => (
-                          <AntDesign
-                            style={styles.icon}
-                            color={isFocus ? "blue" : "black"}
-                            name="Safety"
-                            // size={20}
-                          />
-                        )}
-                      />
-                      <Text style={{ color: "red" }}>{item.badMessage}</Text>
-                    </View>
-                  ) : (
-                    // If Field is not required make it green
-                    <View style={styles.drp_container}>
-                      {renderLabel()}
-                      <Dropdown
-                        style={[
-                          styles.drp_not_mandetory,
-                          isFocus && { borderColor: "blue" },
-                        ]}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={data}
-                        search
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder={!isFocus ? "Select item" : "..."}
-                        searchPlaceholder="Search..."
-                        value={Value1}
-                        onFocus={() => isFocus(true)}
-                        onBlur={() => isFocus(false)}
-                        onChange={(Value1) => changeText(Value1, item)}
-                        // onChange={(item,Value1) => {
-                        //   // ******Value(item.value)
+                          //   isFocus(false);
+                          //   // changeText(Value1,item);
+                          // }}
+                          renderLeftIcon={() => (
+                            <AntDesign
+                              style={styles.icon}
+                              color={isFocus ? "blue" : "black"}
+                              name="Safety"
+                              // size={20}
+                            />
+                          )}
+                        />
+                        <Text style={{ color: "red" }}>{item.badMessage}</Text>
+                      </View>
+                    ) : (
+                      // If Field is not required make it green
+                      <View style={styles.drp_container}>
+                        {renderLabel()}
+                        <Dropdown
+                          style={[
+                            styles.drp_not_mandetory,
+                            isFocus && { borderColor: "blue" },
+                          ]}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={data}
+                          search
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          placeholder={!isFocus ? "Select item" : "..."}
+                          searchPlaceholder="Search..."
+                          value={Value1}
+                          onFocus={() => isFocus(true)}
+                          onBlur={() => isFocus(false)}
+                          onChange={(Value1) => changeText(Value1, item)}
+                          // onChange={(item,Value1) => {
+                          //   // ******Value(item.value)
 
-                        //   isFocus(false);
-                        //   // changeText(Value1,item);
-                        // }}
-                        renderLeftIcon={() => (
-                          <AntDesign
-                            style={styles.icon}
-                            color={isFocus ? "blue" : "black"}
-                            name="Safety"
-                            size={20}
-                          />
-                        )}
-                      />
-                      <Text style={{ color: "red" }}>{item.badMessage}</Text>
-                    </View>
-                  )
-                ) : // Chek Box input
-                item.field == "TEXT_Checkbox" ? (
-                  // Check if field is required true make it red
-                  item.fieldrequired == "true" ? (
-                    <View style={styles.drp_container}>
-                      <CheckBox
-                        title="Click Here"
-                        checked={item.checked}
-                        // onPress={() => checked(!{ checked })}
-                        onPress={(e) => handleOnChange(e, item)}
-                        // onPress={() => setChecked(!item.checked)}
-                      />
+                          //   isFocus(false);
+                          //   // changeText(Value1,item);
+                          // }}
+                          renderLeftIcon={() => (
+                            <AntDesign
+                              style={styles.icon}
+                              color={isFocus ? "blue" : "black"}
+                              name="Safety"
+                              size={20}
+                            />
+                          )}
+                        />
+                        <Text style={{ color: "red" }}>{item.badMessage}</Text>
+                      </View>
+                    )
+                  ) : // Chek Box input
+                  item.field == "TEXT_Checkbox" ? (
+                    // Check if field is required true make it red
+                    item.fieldrequired == "true" ? (
+                      <View style={styles.drp_container}>
+                        <CheckBox
+                          title="Click Here"
+                          checked={item.checked}
+                          // onPress={() => checked(!{ checked })}
+                          onPress={(e) => handleOnChange(e, item)}
+                          // onPress={() => setChecked(!item.checked)}
+                        />
 
-                      <Text style={{ color: "red" }}>{item.badMessage}</Text>
-                    </View>
-                  ) : (
-                    // If Field is not required make it green
-                    <View style={styles.drp_container}>
-                      <CheckBox
-                        title="Click Here"
-                        checked={item.checked}
-                        // onPress={() => checked(!{ checked })}
-                        onPress={(e) => handleOnChange(e, item)}
-                        // onPress={() => setChecked(!item.checked)}
-                      />
+                        <Text style={{ color: "red" }}>{item.badMessage}</Text>
+                      </View>
+                    ) : (
+                      // If Field is not required make it green
+                      <View style={styles.drp_container}>
+                        <CheckBox
+                          title="Click Here"
+                          checked={item.checked}
+                          // onPress={() => checked(!{ checked })}
+                          onPress={(e) => handleOnChange(e, item)}
+                          // onPress={() => setChecked(!item.checked)}
+                        />
 
-                      <Text style={{ color: "red" }}>{item.badMessage}</Text>
-                    </View>
-                  )
-                ) : // Radio input
-                item.field == "TEXT_redio" ? (
-                  // Check if field is required true make it red
-                  item.fieldrequired == "true" ? (
-                    <View style={styles.drp_container}>
-                      <RadioGroup
-                        radioButtons={item.radioButtonsData}
-                        // onPress={onPressRadioButton}
-                        onPress={(e) => handleOnChangeRadio(e, item)}
-                        layout="row"
-                      />
+                        <Text style={{ color: "red" }}>{item.badMessage}</Text>
+                      </View>
+                    )
+                  ) : // Radio input
+                  item.field == "TEXT_redio" ? (
+                    // Check if field is required true make it red
+                    item.fieldrequired == "true" ? (
+                      <View style={styles.drp_container}>
+                        <RadioGroup
+                          radioButtons={item.radioButtonsData}
+                          // onPress={onPressRadioButton}
+                          onPress={(e) => handleOnChangeRadio(e, item)}
+                          layout="row"
+                        />
 
-                      <Text style={{ color: "red" }}>{item.badMessage}</Text>
-                    </View>
-                  ) : (
-                    // If Field is not required make it green
-                    <View style={styles.drp_container}>
-                      <RadioGroup
-                        radioButtons={item.radioButtonsData}
-                        // onPress={onPressRadioButton}
-                        onPress={(e) => handleOnChangeRadio(e, item)}
-                        layout="row"
-                      />
-                      <Text style={{ color: "red" }}>{item.badMessage}</Text>
-                    </View>
-                  )
-                ) : // Date input
-                item.field == "TEXT_date" ? (
-                  // Check if field is required true make it red
-                  item.fieldrequired == "true" ? (
-                    <Row>
-                      <Label>Input</Label>
-                      <DatePickerInput
-                        locale={locale}
-                        value={item.temp_date}
-                        onChange={(e) =>
-                          handleOnChangeDate(e, setInputDate, item)
-                        }
-                        inputMode="start"
-                        validRange={{
-                          startDate: new Date(2022, 6, 1), // optional (2022, 5, 1) means min date jun 1st
-                          endDate: new Date(), // optional
-                          //   disabledDates: [new Date()] // optional
-                          disabledDates: [new Date(2022, 1, 5)], // optional
-                        }}
-                        saveLabelDisabled={true}
-                        autoComplete={"birthdate-full"}
-                      />
-                    </Row>
-                  ) : (
-                    // If Field is not required make it green
+                        <Text style={{ color: "red" }}>{item.badMessage}</Text>
+                      </View>
+                    ) : (
+                      // If Field is not required make it green
+                      <View style={styles.drp_container}>
+                        <RadioGroup
+                          radioButtons={item.radioButtonsData}
+                          // onPress={onPressRadioButton}
+                          onPress={(e) => handleOnChangeRadio(e, item)}
+                          layout="row"
+                        />
+                        <Text style={{ color: "red" }}>{item.badMessage}</Text>
+                      </View>
+                    )
+                  ) : // Date input
+                  item.field == "TEXT_date" ? (
+                    // Check if field is required true make it red
+                    item.fieldrequired == "true" ? (
+                      <Row>
+                        <Label>Input</Label>
+                        <DatePickerInput
+                          locale={locale}
+                          value={item.temp_date}
+                          onChange={(e) =>
+                            handleOnChangeDate(e, setInputDate, item)
+                          }
+                          inputMode="start"
+                          validRange={{
+                            startDate: new Date(2022, 6, 1), // optional (2022, 5, 1) means min date jun 1st
+                            endDate: new Date(), // optional
+                            //   disabledDates: [new Date()] // optional
+                            disabledDates: [new Date(2022, 1, 5)], // optional
+                          }}
+                          saveLabelDisabled={true}
+                          autoComplete={"birthdate-full"}
+                        />
+                      </Row>
+                    ) : (
+                      // If Field is not required make it green
 
-                    <Row>
-                      <Label>Input</Label>
-                      <DatePickerInput
-                        locale={locale}
-                        value={item.temp_date}
-                        onChange={(e) =>
-                          handleOnChangeDate(e, setInputDate, item)
-                        }
-                        inputMode="start"
-                        validRange={{
-                          startDate: new Date(2022, 6, 1), // optional (2022, 5, 1) means min date jun 1st
-                          endDate: new Date(), // optional
-                          //   disabledDates: [new Date()] // optional
-                          disabledDates: [new Date(2022, 1, 5)], // optional
-                        }}
-                        saveLabelDisabled={true}
-                        autoComplete={"birthdate-full"}
-                      />
-                    </Row>
-                  )
-                ) : // Date Time
-                item.field == "TEXT_time" ? (
-                  // Check if field is required true make it red
-                  item.fieldrequired == "true" ? (
-                    <>
-                      <TimePickerModal
-                        visible={visible}
-                        onDismiss={onDismiss}
-                        onConfirm={onConfirm}
-                        hours={12} // default: current hours
-                        minutes={14} // default: current minutes
-                        label="Select time" // optional, default 'Select time'
-                        uppercase={false} // optional, default is true
-                        cancelLabel="Cancel" // optional, default: 'Cancel'
-                        confirmLabel="Ok" // optional, default: 'Ok'
-                        animationType="fade" // optional, default is 'none'
-                        locale="en" // optional, default is automically detected by your system
-                        // keyboardIcon="keyboard-outline" // optional, default is "keyboard-outline"
-                        // clockIcon="clock-outline" // optional, default is "clock-outline"
-                      />
-                      <Button
-                        title="Press Me"
-                        onPress={() => setVisible(true)}
-                      ></Button>
-                    </>
-                  ) : (
-                    // If Field is not required make it green
+                      <Row>
+                        <Label>Input</Label>
+                        <DatePickerInput
+                          locale={locale}
+                          value={item.temp_date}
+                          onChange={(e) =>
+                            handleOnChangeDate(e, setInputDate, item)
+                          }
+                          inputMode="start"
+                          validRange={{
+                            startDate: new Date(2022, 6, 1), // optional (2022, 5, 1) means min date jun 1st
+                            endDate: new Date(), // optional
+                            //   disabledDates: [new Date()] // optional
+                            disabledDates: [new Date(2022, 1, 5)], // optional
+                          }}
+                          saveLabelDisabled={true}
+                          autoComplete={"birthdate-full"}
+                        />
+                      </Row>
+                    )
+                  ) : // Date Time
+                  item.field == "TEXT_time" ? (
+                    // Check if field is required true make it red
+                    item.fieldrequired == "true" ? (
+                      <>
+                        <TimePickerModal
+                          visible={visible}
+                          onDismiss={onDismiss}
+                          onConfirm={onConfirm}
+                          hours={12} // default: current hours
+                          minutes={14} // default: current minutes
+                          label="Select time" // optional, default 'Select time'
+                          uppercase={false} // optional, default is true
+                          cancelLabel="Cancel" // optional, default: 'Cancel'
+                          confirmLabel="Ok" // optional, default: 'Ok'
+                          animationType="fade" // optional, default is 'none'
+                          locale="en" // optional, default is automically detected by your system
+                          // keyboardIcon="keyboard-outline" // optional, default is "keyboard-outline"
+                          // clockIcon="clock-outline" // optional, default is "clock-outline"
+                        />
+                        <Button
+                          title="Press Me"
+                          onPress={() => setVisible(true)}
+                        ></Button>
+                      </>
+                    ) : (
+                      // If Field is not required make it green
 
-                    <>
-                      <TimePickerModal
-                        visible={visible}
-                        onDismiss={onDismiss}
-                        onConfirm={onConfirm}
-                        hours={12} // default: current hours
-                        minutes={14} // default: current minutes
-                        label="Select time" // optional, default 'Select time'
-                        uppercase={false} // optional, default is true
-                        cancelLabel="Cancel" // optional, default: 'Cancel'
-                        confirmLabel="Ok" // optional, default: 'Ok'
-                        animationType="fade" // optional, default is 'none'
-                        locale="en" // optional, default is automically detected by your system
-                        // keyboardIcon="keyboard-outline" // optional, default is "keyboard-outline"
-                        // clockIcon="clock-outline" // optional, default is "clock-outline"
-                      />
-                      <Button onPress={() => setVisible(true)}>
-                        Pick time
-                      </Button>
-                    </>
-                  )
-                ) : //   If not Any input Type
-                null
-              }
-            </View>
-            {/* <Text style={styles.text}>
+                      <>
+                        <TimePickerModal
+                          visible={visible}
+                          onDismiss={onDismiss}
+                          onConfirm={onConfirm}
+                          hours={12} // default: current hours
+                          minutes={14} // default: current minutes
+                          label="Select time" // optional, default 'Select time'
+                          uppercase={false} // optional, default is true
+                          cancelLabel="Cancel" // optional, default: 'Cancel'
+                          confirmLabel="Ok" // optional, default: 'Ok'
+                          animationType="fade" // optional, default is 'none'
+                          locale="en" // optional, default is automically detected by your system
+                          // keyboardIcon="keyboard-outline" // optional, default is "keyboard-outline"
+                          // clockIcon="clock-outline" // optional, default is "clock-outline"
+                        />
+                        <Button onPress={() => setVisible(true)}>
+                          Pick time
+                        </Button>
+                      </>
+                    )
+                  ) : //   If not Any input Type
+                  null
+                }
+              </View>
+
+              {/* <Text style={styles.text}>
               {key}. {item.val}
               {key}. {item.fieldname}
             </Text> */}
-            <View style={styles.separator} />
-          </TouchableOpacity>
+              <View style={styles.separator} />
+            </TouchableOpacity>
+          </ScrollView>
         ))}
       </View>
     </View>
@@ -622,85 +625,84 @@ const Masteform = ({ navigation }) => {
     setRadioButtons(radioButtonsArray);
   }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View style={{ flexDirection: "row", padding: 10 }}>
-          <Text style={styles.titleText}>Patient Registration</Text>
-          <TouchableOpacity onPress={() => setMultiSelect(!multiSelect)}>
-            <Text
-              style={{
-                textAlign: "center",
-                justifyContent: "center",
-                fontSize: 25,
-                color: "red",
-              }}
-            >
-              {multiSelect
-                ? "Enable Single \n Expand"
-                : "Enalble Multiple \n Expand"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <ScrollView>
-          <TouchableOpacity>
-            <Text
-              style={{
-                textAlign: "center",
-                justifyContent: "center",
-              }}
-            >
-              {/* {isValidForm} */}
-              {checked}
-            </Text>
-            <CheckBox
-              title="Click Here"
-              checked={checked}
-              onPress={() => setChecked(!checked)}
-            />
-            <RadioGroup
-              radioButtons={radioButtons}
-              onPress={onPressRadioButton}
-              layout="row"
-            />
-          </TouchableOpacity>
+    <SafeAreaView>
+      <View style={{ backgroundColor: "green", flexDirection: "row" }}>
+        <Text>Patient Registration</Text>
+        <TouchableOpacity onPress={() => setMultiSelect(!multiSelect)}>
+          <Text
+            style={{
+              textAlign: "center",
+              justifyContent: "center",
+              fontSize: 25,
+              color: "red",
+            }}
+          >
+            {multiSelect
+              ? "Enable Single \n Expand"
+              : "Enalble Multiple \n Expand"}
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-          {/* <Button title="Show Date Picker" onPress={showDatePicker} />
+      <TouchableOpacity>
+        <Text
+          style={{
+            textAlign: "center",
+            justifyContent: "center",
+          }}
+        >
+          {/* {isValidForm} */}
+          {checked}
+        </Text>
+        <CheckBox
+          title="Click Here"
+          checked={checked}
+          onPress={() => setChecked(!checked)}
+        />
+        <RadioGroup
+          radioButtons={radioButtons}
+          onPress={onPressRadioButton}
+          layout="row"
+        />
+      </TouchableOpacity>
+
+      {/* <Button title="Show Date Picker" onPress={showDatePicker} />
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
           /> */}
-          {/* Date IMP */}
-          <View style={styles.element_container}>
-            <SingleDatePage
-              temp_date={(temp_date) => setTemp_date(temp_date)}
-            />
-            <TextInput
-              style={styles.date_text}
-              autoCorrect={false}
-              value={temp_date}
-              placeholder="Select Registration Date"
-            />
-          </View>
-          {/* Date End */}
-          {listDataSource.map((item, key) => (
-            <ExpandableComponent
-              key={item.category_name}
-              onClickFunction={() => {
-                updateLayout(key);
-              }}
-              listDataSource={(listDataSource) =>
-                setListDataSource(listDataSource)
-              }
-              isValidForm={(isValidForm) => setIsValidForm(isValidForm)}
-              value={(Value1) => setValue1(Value1)}
-              isFocus={(isFocus) => setIsFocus(isFocus)}
-              item={item}
-            />
-          ))}
-        </ScrollView>
+      {/* Date IMP */}
+      <View style={styles.element_container}>
+        <SingleDatePage temp_date={(temp_date) => setTemp_date(temp_date)} />
+        <TextInput
+          style={styles.date_text}
+          autoCorrect={false}
+          value={temp_date}
+          placeholder="Select Registration Date"
+        />
       </View>
+      {/* Date End */}
+      <ScrollView>
+        
+        {listDataSource.map((item, key) => (
+          <ExpandableComponent
+            key={item.category_name}
+            onClickFunction={() => {
+              updateLayout(key);
+            }}
+            listDataSource={(listDataSource) =>
+              setListDataSource(listDataSource)
+            }
+            isValidForm={(isValidForm) => setIsValidForm(isValidForm)}
+            value={(Value1) => setValue1(Value1)}
+            isFocus={(isFocus) => setIsFocus(isFocus)}
+            item={item}
+          />
+        ))}
+        
+      </ScrollView>
     </SafeAreaView>
   );
 };

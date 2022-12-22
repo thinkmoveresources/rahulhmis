@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import {
   Input,
@@ -10,181 +10,22 @@ import {
   Image,
   AspectRatio,
 } from "native-base";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { alignContent, flex, flexDirection, width } from "styled-system";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-export default function SignIn({ navigation }) {
-  const [username, setUsername] = useState("");
-  const [nameinfo, setNameinfo] = useState({
-    email: "",
-    password: "",
-    fname: "",
-    lname: "",
-  });
-  const [errmsg, setErrormsg] = useState("");
-  // function handlefnamechange(e) {
-  //   setNameinfo({
-  //     ...nameinfo,
-  //     fname: e.target.value,
-  //   });
-  //   alert(nameinfo.fname);
-  // }
-  // function handleemailchange(e) {
-  //   setNameinfo({
-  //     ...nameinfo,
-  //     email: e.target.value,
-  //   });
-  // }
-  // function handlepasswordchange(e) {
-  //   setNameinfo({
-  //     ...nameinfo,
-  //     password: e.target.value,
-  //   });
-  // }
-  // function handleLnamechange(e) {
-  //   setNameinfo({
-  //     ...nameinfo,
-  //     lname: e.target.value,
-  //   });
-  // }
-  // let usertoken = "";
-  const onSubmit = (data) => {
-    // alert("Reached");
-    axios
-      .post("https://www.thinkmoveresources.com/Users/login", {
-        email: nameinfo.email,
-        password: nameinfo.password,
-        fname: nameinfo.fname,
-        lname: nameinfo.lname,
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      })
-      .then((response) => {  
-            
-        if (   
-                 
-          response.data === "Email not found" 
-          ||response.data === "Password incorrect"
-        ){
-          alert("Stage-1");
-        //   return "Email not found";
-        sessionStorage.setItem("usertoken", response.data);
-        // return response.data;
-      }else{
-        // alert("Stage-2");
-        
-        // alert("reached");
-        // sessionStorage.setItem("userData", JSON.stringify(nameinfo));
-        AsyncStorage.setItem("userData", JSON.stringify(nameinfo));
-         navigation.navigate("NavMenu");
-        alert("responce 111");
-       
-        //   this.props.history.push("/employee/login/employee_home");
-      }
-      })
-      // .then((res) => {       
-      //   if (res != "Email not found") {
-      //     alert(res.data);
-      //     // alert("reached");
-      //     sessionStorage.setItem("userData", JSON.stringify(nameinfo));
-      //      alert("responce 111");
-      //     navigation.navigate("NavMenu");
-      //     //   this.props.history.push("/employee/login/employee_home");
-      //   }
-      // })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  navigation = useNavigation();
+
+function Signup() {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.Middle}>
-        <Text style={styles.LoginText}>Login</Text>
+        <Text style={styles.LoginText}>Signup</Text>
       </View>
       <View style={styles.text2}>
-        <Text>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-          <Text style={styles.signupText}> Sign up</Text>
+        <Text>Already have account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.signupText}> Login </Text>
         </TouchableOpacity>
-      </View>
-
-      {/* First Name */}
-      <View style={styles.buttonStyle}>
-        <View style={styles.emailInput}>
-          <Input
-            InputLeftElement={
-              <Icon
-                as={<FontAwesome5 name="user-secret" />}
-                size="sm"
-                m={2}
-                _light={{
-                  color: "black",
-                }}
-                _dark={{
-                  color: "gray.300",
-                }}
-              />
-            }
-            variant="outline"
-            placeholder="First name"
-            _light={{
-              placeholderTextColor: "blueGray.400",
-            }}
-            _dark={{
-              placeholderTextColor: "blueGray.50",
-            }}
-            // onChange={(e) => handlefnamechange(e)}
-            onChangeText={(text) =>
-              setNameinfo({
-                ...nameinfo,
-                fname: text,
-              })
-            }
-            value={nameinfo.fname}
-            name="fname"
-            editable={true}
-          />
-        </View>
-      </View>
-      {/* Last Name */}
-      <View style={styles.buttonStyle}>
-        <View style={styles.emailInput}>
-          <Input
-            InputLeftElement={
-              <Icon
-                as={<FontAwesome5 name="user-secret" />}
-                size="sm"
-                m={2}
-                _light={{
-                  color: "black",
-                }}
-                _dark={{
-                  color: "gray.300",
-                }}
-              />
-            }
-            variant="outline"
-            placeholder="last name"
-            _light={{
-              placeholderTextColor: "blueGray.400",
-            }}
-            _dark={{
-              placeholderTextColor: "blueGray.50",
-            }}
-            // onChange={(e) => handleLnamechange(e)}
-            onChangeText={(text) =>
-              setNameinfo({
-                ...nameinfo,
-                lname: text,
-              })
-            }
-            value={nameinfo.lname}
-            name="lname"
-            editable={true}
-          />
-        </View>
       </View>
 
       {/* Username or Email Input Field */}
@@ -205,23 +46,42 @@ export default function SignIn({ navigation }) {
               />
             }
             variant="outline"
-            placeholder="Username or Email"
+            placeholder="Username"
             _light={{
               placeholderTextColor: "blueGray.400",
             }}
             _dark={{
               placeholderTextColor: "blueGray.50",
             }}
-            // onChange={(e) => handleemailchange(e)}
-            // value={nameinfo.email}
-            onChangeText={(text) =>
-              setNameinfo({
-                ...nameinfo,
-                email: text,
-              })
+          />
+        </View>
+      </View>
+
+      {/* Username or Email Input Field */}
+      <View style={styles.buttonStyleX}>
+        <View style={styles.emailInput}>
+          <Input
+            InputLeftElement={
+              <Icon
+                as={<MaterialCommunityIcons name="email" />}
+                size="sm"
+                m={2}
+                _light={{
+                  color: "black",
+                }}
+                _dark={{
+                  color: "gray.300",
+                }}
+              />
             }
-            name="email"
-            editable={true}
+            variant="outline"
+            placeholder="Email"
+            _light={{
+              placeholderTextColor: "blueGray.400",
+            }}
+            _dark={{
+              placeholderTextColor: "blueGray.50",
+            }}
           />
         </View>
       </View>
@@ -252,25 +112,43 @@ export default function SignIn({ navigation }) {
             _dark={{
               placeholderTextColor: "blueGray.50",
             }}
-            // onChange={(e) => handlepasswordchange(e)}
-            onChangeText={(text) =>
-              setNameinfo({
-                ...nameinfo,
-                password: text,
-              })
+          />
+        </View>
+      </View>
+
+      {/* Password Input Field */}
+      <View style={styles.buttonStyleX}>
+        <View style={styles.emailInput}>
+          <Input
+            InputLeftElement={
+              <Icon
+                as={<FontAwesome5 name="key" />}
+                size="sm"
+                m={2}
+                _light={{
+                  color: "black",
+                }}
+                _dark={{
+                  color: "gray.300",
+                }}
+              />
             }
-            value={nameinfo.password}
-            name="password"
-            editable={true}
+            variant="outline"
+            secureTextEntry={true}
+            placeholder="Confirm Password"
+            _light={{
+              placeholderTextColor: "blueGray.400",
+            }}
+            _dark={{
+              placeholderTextColor: "blueGray.50",
+            }}
           />
         </View>
       </View>
 
       {/* Button */}
       <View style={styles.buttonStyle}>
-        <Button style={styles.buttonDesign} onPress={onSubmit}>
-          LOGIN
-        </Button>
+        <Button style={styles.buttonDesign}>REGISTER NOW</Button>
       </View>
 
       {/* Line */}
@@ -374,13 +252,13 @@ export default function SignIn({ navigation }) {
   );
 }
 
-// export default () => {
-//   return (
-//     <NativeBaseProvider>
-//       <Login />
-//     </NativeBaseProvider>
-//   );
-// };
+export default () => {
+  return (
+    <NativeBaseProvider>
+      <Signup />
+    </NativeBaseProvider>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

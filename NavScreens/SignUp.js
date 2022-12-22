@@ -1,277 +1,325 @@
-import React, { useState,useCallback,useEffect } from 'react';
-import { View, Text, TextInput, Alert, ScrollView, Keyboard ,StyleSheet, SafeAreaView} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { styles } from "../Style";
-import { useForm, Controller } from "react-hook-form";
-import DropDownPicker from "react-native-dropdown-picker";
-import axios from 'axios';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  Input,
+  NativeBaseProvider,
+  Button,
+  Icon,
+  Box,
+  Image,
+  AspectRatio,
+} from "native-base";
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { alignContent, flex, flexDirection, width } from "styled-system";
+
 export default function SignUp({ navigation }) {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  //Dropdown
-  const [roleOpen, setRoleOpen] = useState(false);
-  const [roleValue, setRoleValue] = useState(null);
-  // const [companyOpen, setCompanyOpen] = useState(false);
-  const [role, setRole] = useState([]);
-  const [posts, setPosts] = useState();
-  useEffect(() => {
-    const sendGetRequest = async () => {
-    try {
-        const resp = await axios.get('https://www.thinkmoveresources.com/mst_role/role_list')
-        .then((response) => {
-          const data = response.data;
-          setRole(data);
-          console.log(data); // returns correctly filled array
-          // setRole([{lable:"rahul@gmail.com","value":"111111"},{lable:"VIjay@gmail.com","value":"222222"}]);
-          // setRole([{lable:"rahul@gmail.com","value":"111111"},{lable:"VIjay@gmail.com","value":"222222"}]);
-          console.log(role); // returns '[]'
-      });
-        // setPosts(JSON.stringify(resp.data));
-        // setRole();
-        // setRole([
-        //   { label: "Male", value: "male" },
-        //   { label: "Female", value: "female" },
-        //   { label: "Prefer Not to Say", value: "neutral" }
-        // ]);
-        // console.log(json(resp.data));
-    } catch (err) {
-        // Handle Error Here
-        console.error(err);
-    }
-};    
-sendGetRequest();
-}, []);
-
-  // const onGenderOpen = useCallback(() => {
-  //   setCompanyOpen(false);
-  // }, []);
-
-//From Hook Veriables  
-const { control, handleSubmit, formState: { errors } } = useForm({
-  defaultValues: {
-    FirstName: '',
-    LastName: '',
-    Email:'',
-    Password:'',
-    ConfirmPassword:''
-  }
-});
-// const onSubmit = data => { 
-//   axios.get('https://www.thinkmoveresources.com/mst_user/user_insert').then((response) => {
-//     data,
-//     headers:{"Content-Type": 'application/x-www-form-urlencoded'}
-//   });
-// }  
-const onSubmit = data => {
-  axios({
-    method: 'post',
-    url: 'https://www.thinkmoveresources.com/mst_user/user_insert',     
-    data,
-    headers:{"Content-Type": 'application/x-www-form-urlencoded'}
-  }).then(function (response) {
-    alert(response.data);
-    navigation.navigate('SignIn')    
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
+  navigation = useNavigation();
   return (
-    <SafeAreaView>
-     <View style={styles.container}>
-     <Text style={styles.text}>Sign in to your account:</Text>      
-      
-      <Text style={styles.label}>Gender</Text>
-      
-      <Controller
-        name="role"
-        defaultValue=""
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <View style={styles.dropdownGender}>
-            <DropDownPicker
-              style={styles.dropdown}
-              open={roleOpen}
-              value={roleValue} //roleValue
-              items={role}
-              setOpen={setRoleOpen}
-              setValue={setRoleValue}
-              setItems={setRole}
-              placeholder="Select Gender"
-              placeholderStyle={styles.placeholderStyles}
-              // onOpen={onGenderOpen}
-              onChangeValue={onChange}
-              zIndex={3000}
-              zIndexInverse={1000}
+    <View style={styles.container}>
+      <View style={styles.Middle}>
+        <Text style={styles.LoginText}>Signup</Text>
+      </View>
+      <View style={styles.text2}>
+        <Text>Already have account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
+          <Text style={styles.signupText}> Login </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Username or Email Input Field */}
+      <View style={styles.buttonStyle}>
+        <View style={styles.emailInput}>
+          <Input
+            InputLeftElement={
+              <Icon
+                as={<FontAwesome5 name="user-secret" />}
+                size="sm"
+                m={2}
+                _light={{
+                  color: "black",
+                }}
+                _dark={{
+                  color: "gray.300",
+                }}
+              />
+            }
+            variant="outline"
+            placeholder="Username"
+            _light={{
+              placeholderTextColor: "blueGray.400",
+            }}
+            _dark={{
+              placeholderTextColor: "blueGray.50",
+            }}
+          />
+        </View>
+      </View>
+
+      {/* Username or Email Input Field */}
+      <View style={styles.buttonStyleX}>
+        <View style={styles.emailInput}>
+          <Input
+            InputLeftElement={
+              <Icon
+                as={<MaterialCommunityIcons name="email" />}
+                size="sm"
+                m={2}
+                _light={{
+                  color: "black",
+                }}
+                _dark={{
+                  color: "gray.300",
+                }}
+              />
+            }
+            variant="outline"
+            placeholder="Email"
+            _light={{
+              placeholderTextColor: "blueGray.400",
+            }}
+            _dark={{
+              placeholderTextColor: "blueGray.50",
+            }}
+          />
+        </View>
+      </View>
+
+      {/* Password Input Field */}
+      <View style={styles.buttonStyleX}>
+        <View style={styles.emailInput}>
+          <Input
+            InputLeftElement={
+              <Icon
+                as={<FontAwesome5 name="key" />}
+                size="sm"
+                m={2}
+                _light={{
+                  color: "black",
+                }}
+                _dark={{
+                  color: "gray.300",
+                }}
+              />
+            }
+            variant="outline"
+            secureTextEntry={true}
+            placeholder="Password"
+            _light={{
+              placeholderTextColor: "blueGray.400",
+            }}
+            _dark={{
+              placeholderTextColor: "blueGray.50",
+            }}
+          />
+        </View>
+      </View>
+
+      {/* Password Input Field */}
+      <View style={styles.buttonStyleX}>
+        <View style={styles.emailInput}>
+          <Input
+            InputLeftElement={
+              <Icon
+                as={<FontAwesome5 name="key" />}
+                size="sm"
+                m={2}
+                _light={{
+                  color: "black",
+                }}
+                _dark={{
+                  color: "gray.300",
+                }}
+              />
+            }
+            variant="outline"
+            secureTextEntry={true}
+            placeholder="Confirm Password"
+            _light={{
+              placeholderTextColor: "blueGray.400",
+            }}
+            _dark={{
+              placeholderTextColor: "blueGray.50",
+            }}
+          />
+        </View>
+      </View>
+
+      {/* Button */}
+      <View style={styles.buttonStyle}>
+        <Button style={styles.buttonDesign}>REGISTER NOW</Button>
+      </View>
+
+      {/* Line */}
+      <View style={styles.lineStyle}>
+        <View style={{ flex: 1, height: 1, backgroundColor: "black" }} />
+        <View>
+          <Text style={{ width: 50, textAlign: "center" }}>Or</Text>
+        </View>
+        <View style={{ flex: 1, height: 1, backgroundColor: "black" }} />
+      </View>
+
+      {/* Box */}
+      <View style={styles.boxStyle}>
+        <Box
+          onPress={() => navigation.navigate("#")} // for navigation
+          style={{ height: 80, width: 80 }}
+          shadow={3}
+          _light={{
+            backgroundColor: "gray.50",
+          }}
+          _dark={{
+            backgroundColor: "gray.700",
+          }}
+        >
+          <AspectRatio ratio={1 / 1}>
+            <Image
+              roundedTop="lg"
+              source={{
+                uri: "https://www.transparentpng.com/thumb/google-logo/colorful-google-logo-transparent-clipart-download-u3DWLj.png",
+              }}
+              alt="image"
             />
-          </View>
-        )}
-      />
-
-      <Controller
-        control={control}
-        rules={{
-         required: true,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.formInput}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            placeholder='Enter First Name*'
-          />
-        )}
-        name="FirstName"
-      />
-      
-      {errors.FirstName && <Text>This is required.</Text>}
-      <Controller
-        control={control}
-        rules={{
-        required: true,
-         maxLength: 100,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.formInput}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            placeholder='Enter Last Name*'
-          />
-        )}
-        name="LastName"
-      />
-     
-      {errors.LastName && <Text>This is required.</Text>}  
-      <Controller
-        control={control}
-        rules={{
-        required: true,
-         maxLength: 100,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.formInput}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            placeholder='Enter Email Name*'
-          />
-        )}
-        name="Email"
-      />
-     
-      {errors.Email && <Text>This is required.</Text>} 
-      <Controller
-        control={control}
-        rules={{
-        required: true,
-         maxLength: 100,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.formInput}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            secureTextEntry={true}
-            placeholder='Enter Password*'
-          />
-        )}
-        name="Password"
-      />
-     
-      {errors.Password && <Text>This is required.</Text>} 
-      <Controller
-        control={control}
-        rules={{
-        required: true,
-         maxLength: 100,
-        }}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.formInput}
-            onBlur={onBlur}
-            onChangeText={onChange}
-            value={value}
-            secureTextEntry={true}
-            placeholder='Confirm Password*'
-          />
-        )}
-        name="ConfirmPassword"
-      />
-     
-      {errors.ConfirmPassword && <Text>This is required.</Text>} 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)} >
-           <Text style={styles.buttonText}>Sign Up</Text>
-          </TouchableOpacity>
-
-          <Text style={styles.inlineText}>Already have an account?</Text>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SignIn')}>
-            <Text style={styles.buttonText}>Sign In</Text>
-          </TouchableOpacity>
-         
-      
-
-       
-          
-          
-       
-     </View>
-    </SafeAreaView>
+          </AspectRatio>
+        </Box>
+        <Box
+          onPress={() => navigation.navigate("#")} // for navigation
+          style={styles.imageStyle}
+          shadow={3}
+          _light={{
+            backgroundColor: "gray.50",
+          }}
+          _dark={{
+            backgroundColor: "gray.700",
+          }}
+        >
+          <AspectRatio ratio={1 / 1}>
+            <Image
+              roundedTop="lg"
+              source={{
+                uri: "https://www.transparentpng.com/thumb/facebook-logo-png/photo-facebook-logo-png-hd-25.png",
+              }}
+              alt="image"
+            />
+          </AspectRatio>
+        </Box>
+        <Box
+          onPress={() => navigation.navigate("#")} // for navigation
+          style={styles.imageStyle}
+          shadow={3}
+          _light={{
+            backgroundColor: "gray.50",
+          }}
+          _dark={{
+            backgroundColor: "gray.700",
+          }}
+        >
+          <AspectRatio ratio={1 / 1}>
+            <Image
+              roundedTop="lg"
+              source={{
+                uri: "https://www.transparentpng.com/thumb/twitter/bird-twitter-socialmedia-icons-png-5.png",
+              }}
+              alt="image"
+            />
+          </AspectRatio>
+        </Box>
+        <Box
+          onPress={() => navigation.navigate("#")} // for navigation
+          style={styles.imageStyle}
+          shadow={3}
+          _light={{
+            backgroundColor: "gray.50",
+          }}
+          _dark={{
+            backgroundColor: "gray.700",
+          }}
+        >
+          <AspectRatio ratio={1 / 1}>
+            <Image
+              roundedTop="lg"
+              source={{
+                uri: "https://www.transparentpng.com/thumb/apple-logo/RRgURB-apple-logo-clipart-hd.png",
+              }}
+              alt="image"
+            />
+          </AspectRatio>
+        </Box>
+      </View>
+      <StatusBar style="auto" />
+    </View>
   );
 }
 
-// const styles = StyleSheet.create({
-//     container: {
-//       height: '100%',
-//       width: '100%',
-//       backgroundColor: '#3FC5AB',
-//       alignItems: 'center',
-//       justifyContent: 'center',
-//     },
-//     button: {
-//       width: 200,
-//       padding: 5,
-//       backgroundColor: '#ff9999',
-//       borderWidth: 2,
-//       borderColor: 'white',
-//       borderRadius: 15,
-//       alignSelf: 'center',
-//       margin: '5%',
-//     },
-//     buttonText: {
-//       fontSize:20,
-//       color: 'white',
-//       fontWeight: 'bold',
-//       textAlign: 'center',
-//     },
-//     inlineText: {
-//       fontSize: 20,
-//       fontWeight: 'bold',
-//       color: 'navy',
-//       textAlign: 'center',
-//       marginTop: '5%',
-//     },
-//     text: {
-//       textAlign: 'center',
-//       fontSize: 25,
-//       margin: '5%',
-//       marginTop:'15%',
-//       fontWeight: 'bold',
-//       color: '#2E6194',
-//     },
-//     textInput: {
-//       width: 300,
-//       fontSize:18,
-//       borderWidth: 1,
-//       borderColor:'#a4eddf',
-//       padding: 10,
-//       margin: 5,
-//     },
-//   });
+// export default () => {
+//   return (
+//     <NativeBaseProvider>
+//       <Signup />
+//     </NativeBaseProvider>
+//   );
+// };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  LoginText: {
+    marginTop: 100,
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  Middle: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  text2: {
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingTop: 5,
+  },
+  signupText: {
+    fontWeight: "bold",
+  },
+  emailField: {
+    marginTop: 30,
+    marginLeft: 15,
+  },
+  emailInput: {
+    marginTop: 10,
+    marginRight: 5,
+  },
+  buttonStyle: {
+    marginTop: 30,
+    marginLeft: 15,
+    marginRight: 15,
+  },
+  buttonStyleX: {
+    marginTop: 12,
+    marginLeft: 15,
+    marginRight: 15,
+  },
+  buttonDesign: {
+    backgroundColor: "#026efd",
+  },
+  lineStyle: {
+    flexDirection: "row",
+    marginTop: 30,
+    marginLeft: 15,
+    marginRight: 15,
+    alignItems: "center",
+  },
+  imageStyle: {
+    width: 80,
+    height: 80,
+    marginLeft: 20,
+  },
+  boxStyle: {
+    flexDirection: "row",
+    marginTop: 30,
+    marginLeft: 15,
+    marginRight: 15,
+    justifyContent: "space-around",
+  },
+});

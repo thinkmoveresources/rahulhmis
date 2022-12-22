@@ -11,6 +11,7 @@ export const drawerItemsMain = [
       { nav: "MainDrawer", routeName: "Settings1", title: "Settings 1" },
       { nav: "MainDrawer", routeName: "Settings2", title: "Settings 2" },
       { nav: "MainDrawer", routeName: "Settings3", title: "Settings 3" },
+      { nav: "MainDrawer", routeName: "Splash", title: "Doctor Splash" },
     ],
   },
 ];

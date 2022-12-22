@@ -15,43 +15,46 @@ import { useNavigation } from "@react-navigation/native";
 import { alignContent, flex, flexDirection, width } from "styled-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-export default function SignIn({ navigation }) {
+function Login() {
+  
   const [username, setUsername] = useState("");
   const [nameinfo, setNameinfo] = useState({
-    email: "",
-    password: "",
+    email:'',
+    password:'',
     fname: "",
     lname: "",
   });
   const [errmsg, setErrormsg] = useState("");
-  // function handlefnamechange(e) {
-  //   setNameinfo({
-  //     ...nameinfo,
-  //     fname: e.target.value,
-  //   });
-  //   alert(nameinfo.fname);
-  // }
-  // function handleemailchange(e) {
-  //   setNameinfo({
-  //     ...nameinfo,
-  //     email: e.target.value,
-  //   });
-  // }
-  // function handlepasswordchange(e) {
-  //   setNameinfo({
-  //     ...nameinfo,
-  //     password: e.target.value,
-  //   });
-  // }
-  // function handleLnamechange(e) {
-  //   setNameinfo({
-  //     ...nameinfo,
-  //     lname: e.target.value,
-  //   });
-  // }
-  // let usertoken = "";
+  function handlefnamechange(e) {
+    setNameinfo({
+      ...nameinfo,
+      fname: e.target.value,
+    });
+    
+  }
+  function handleemailchange(e) {
+    setNameinfo({
+      ...nameinfo,
+      email: e.target.value,
+    });
+   
+  }
+  function handlepasswordchange(e) {
+    setNameinfo({
+      ...nameinfo,
+      password: e.target.value,
+    });
+    
+  }
+ function handleLnamechange(e) {
+   setNameinfo({
+     ...nameinfo,
+     lname: e.target.value,
+   });
+  
+ }
+  let usertoken = "";
   const onSubmit = (data) => {
-    // alert("Reached");
     axios
       .post("https://www.thinkmoveresources.com/Users/login", {
         email: nameinfo.email,
@@ -60,44 +63,30 @@ export default function SignIn({ navigation }) {
         lname: nameinfo.lname,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
-      .then((response) => {  
-            
-        if (   
-                 
-          response.data === "Email not found" 
-          ||response.data === "Password incorrect"
-        ){
-          alert("Stage-1");
-        //   return "Email not found";
+      .then((response) => {
+        if (
+          response.data === "Email not found" ||
+          response.data === "Password incorrect"
+        )
+        alert(response.data);
+        //   return "Email not found";        
         sessionStorage.setItem("usertoken", response.data);
         // return response.data;
-      }else{
-        // alert("Stage-2");
-        
-        // alert("reached");
-        // sessionStorage.setItem("userData", JSON.stringify(nameinfo));
-        AsyncStorage.setItem("userData", JSON.stringify(nameinfo));
-         navigation.navigate("NavMenu");
-        alert("responce 111");
-       
-        //   this.props.history.push("/employee/login/employee_home");
-      }
       })
-      // .then((res) => {       
-      //   if (res != "Email not found") {
-      //     alert(res.data);
-      //     // alert("reached");
-      //     sessionStorage.setItem("userData", JSON.stringify(nameinfo));
-      //      alert("responce 111");
-      //     navigation.navigate("NavMenu");
-      //     //   this.props.history.push("/employee/login/employee_home");
-      //   }
-      // })
+      .then((res) => {
+        if (res !== "Email not found") {
+        alert("reached");
+        
+          sessionStorage.setItem("userData", JSON.stringify(nameinfo));
+           navigation.navigate("NavMenu");
+        //   this.props.history.push("/employee/login/employee_home");
+        }
+      })
       .catch((err) => {
         console.log(err);
       });
   };
-  navigation = useNavigation();
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.Middle}>
@@ -105,7 +94,7 @@ export default function SignIn({ navigation }) {
       </View>
       <View style={styles.text2}>
         <Text>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
           <Text style={styles.signupText}> Sign up</Text>
         </TouchableOpacity>
       </View>
@@ -135,13 +124,7 @@ export default function SignIn({ navigation }) {
             _dark={{
               placeholderTextColor: "blueGray.50",
             }}
-            // onChange={(e) => handlefnamechange(e)}
-            onChangeText={(text) =>
-              setNameinfo({
-                ...nameinfo,
-                fname: text,
-              })
-            }
+            onChange={(e) => handlefnamechange(e, name)}
             value={nameinfo.fname}
             name="fname"
             editable={true}
@@ -173,18 +156,13 @@ export default function SignIn({ navigation }) {
             _dark={{
               placeholderTextColor: "blueGray.50",
             }}
-            // onChange={(e) => handleLnamechange(e)}
-            onChangeText={(text) =>
-              setNameinfo({
-                ...nameinfo,
-                lname: text,
-              })
-            }
+            onChange={(e) => handleLnamechange(e)}
             value={nameinfo.lname}
             name="lname"
             editable={true}
           />
         </View>
+
       </View>
 
       {/* Username or Email Input Field */}
@@ -212,18 +190,13 @@ export default function SignIn({ navigation }) {
             _dark={{
               placeholderTextColor: "blueGray.50",
             }}
-            // onChange={(e) => handleemailchange(e)}
-            // value={nameinfo.email}
-            onChangeText={(text) =>
-              setNameinfo({
-                ...nameinfo,
-                email: text,
-              })
-            }
+            onChange={(e) => handleemailchange(e)}
+            value={nameinfo.email}
             name="email"
             editable={true}
           />
         </View>
+        
       </View>
 
       {/* Password Input Field */}
@@ -252,13 +225,7 @@ export default function SignIn({ navigation }) {
             _dark={{
               placeholderTextColor: "blueGray.50",
             }}
-            // onChange={(e) => handlepasswordchange(e)}
-            onChangeText={(text) =>
-              setNameinfo({
-                ...nameinfo,
-                password: text,
-              })
-            }
+            onChange={(e) => handlepasswordchange(e)}
             value={nameinfo.password}
             name="password"
             editable={true}
@@ -374,13 +341,13 @@ export default function SignIn({ navigation }) {
   );
 }
 
-// export default () => {
-//   return (
-//     <NativeBaseProvider>
-//       <Login />
-//     </NativeBaseProvider>
-//   );
-// };
+export default () => {
+  return (
+    <NativeBaseProvider>
+      <Login />
+    </NativeBaseProvider>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

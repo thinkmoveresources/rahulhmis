@@ -102,7 +102,7 @@ export default function Registration({ navigation }) {
   return (
     <SafeAreaView>
       
-      <View style={styles.container}>
+      <View>
         <Text style={styles.text}>Sign in to your account:</Text>
 
         <Text style={styles.label}>Role</Text>

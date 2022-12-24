@@ -14,6 +14,7 @@ import Setting1 from "../NavScreens/Setting1";
 import Registration1 from "../NavScreens/Setting3";
 import Registration from "../NavScreens/Registration";
 import Splash from "../NavScreens/Splash";
+import User_registration from "../NavScreens/users/User_registration";
 import CustomDrawerContent from "../MainNavMenu/CustomDrawerContent.js";
 import { drawerItemsMain } from "../MainNavMenu/drawerItemsMain";
 import CustomHeader from "../MainNavMenu/CustomHeader";
@@ -179,6 +180,7 @@ export function MainDrawerNavigation({ props }) {
       <Drawer.Screen name="Settings2" component={Settings2Screen} />
       <Drawer.Screen name="Settings3" component={Settings3Screen} />
       <Drawer.Screen name="Registration" component={Registration_call} />
+      <Drawer.Screen name="Users" component={User_registration} />
       <Drawer.Screen name="Splash" component={Splash_func} />
       {/* <Drawer.Screen name="Userlist" component={UserScreen} />
       <Drawer.Screen name="UserDetails" component={UserDetailScreen} />

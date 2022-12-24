@@ -5,6 +5,15 @@ export const drawerItemsMain = [
     routes: [{ nav: "MainDrawer", routeName: "Home", title: "Home" }],
   },
   {
+    key: "Users",
+    title: "User Management",
+    routes: [
+      { nav: "MainDrawer", routeName: "Users", title: "Users" },
+      { nav: "MainDrawer", routeName: "Doctors", title: "Doctors" },
+      { nav: "MainDrawer", routeName: "Admin", title: "Admin" },
+    ],
+  },
+  {
     key: "Settings",
     title: "Settings",
     routes: [

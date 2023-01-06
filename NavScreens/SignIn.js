@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
+
 import {
   StyleSheet,
   Text,
@@ -22,8 +23,24 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { alignContent, flex, flexDirection, width } from "styled-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import RootNavigator from "../navigation/RootNavigator";
+import NavMenu from "../NavScreens/NavMenu";
+import SignUp from "../NavScreens/SignUp";
 import axios from "axios";
+import { Localization } from "expo-localization";
+// import StringsOfLanguages from "./StringsOfLanguages";
+import { I18n } from "i18n-js";
+import StringsOfLanguages from "../NavScreens/StringsOfLanguages";
 export default function SignIn({ navigation }) {
+   const lang = [
+     { shortform: "hi", longform: "Hindi" },
+     { shortform: "ma", longform: "Marathi" },
+     { shortform: "tl", longform: "Telgu" },
+     { shortform: "en", longform: "English" },
+     { shortform: "fr", longform: "French" },
+     { shortform: "gj", longform: "Gujarati" },
+   ]; 
+   const [userlang, setUserlang] = useState("");  
   const [username, setUsername] = useState("");
   const [nameinfo, setNameinfo] = useState({
     email: "",
@@ -31,6 +48,19 @@ export default function SignIn({ navigation }) {
     fname: "",
     lname: "",
   });
+  StringsOfLanguages.locale = userlang;
+  const settext = (lang) => {
+    const StringsOfLanguages = new I18n(lang);
+    // StringsOfLanguages.locale = "hi";
+    StringsOfLanguages.enableFallback = true;
+    console.log(StringsOfLanguages);      
+    setUserlang(lang);  
+    console.log(userlang);
+    AsyncStorage.setItem("userlang", JSON.stringify(lang));
+    console.log(lang)
+    // StringsOfLanguages.setLanguage(value);
+    // navigation.navigate("ContentScreen", { selectedLanguage: value });
+  };
   const [errmsg, setErrormsg] = useState("");
   // function handlefnamechange(e) {
   //   setNameinfo({
@@ -74,32 +104,17 @@ export default function SignIn({ navigation }) {
           response.data === "Email not found" ||
           response.data === "Password incorrect"
         ) {
-          alert("Stage-1");
-          //   return "Email not found";
-          sessionStorage.setItem("usertoken", response.data);
-          // return response.data;
+          return "Email not found";
         } else {
-          // alert("Stage-2");
-
-          // alert("reached");
-          // sessionStorage.setItem("userData", JSON.stringify(nameinfo));
+          console.log(response.data);
+          console.log(nameinfo);
+          AsyncStorage.setItem("usertoken", response.data);
           AsyncStorage.setItem("userData", JSON.stringify(nameinfo));
-          navigation.navigate("NavMenu");
-          alert("responce 111");
-
-          //   this.props.history.push("/employee/login/employee_home");
+          console.log(AsyncStorage.getItem("userData"));
+          navigation.navigate("RootNavigator");
+          // navigation.navigate("NavMenu");
         }
       })
-      // .then((res) => {
-      //   if (res != "Email not found") {
-      //     alert(res.data);
-      //     // alert("reached");
-      //     sessionStorage.setItem("userData", JSON.stringify(nameinfo));
-      //      alert("responce 111");
-      //     navigation.navigate("NavMenu");
-      //     //   this.props.history.push("/employee/login/employee_home");
-      //   }
-      // })
       .catch((err) => {
         console.log(err);
       });
@@ -108,18 +123,41 @@ export default function SignIn({ navigation }) {
   return (
     <ScrollView w={["200", "300"]} h="80">
       <View style={styles.container}>
+        <Text style={styles.headingStyle}>
+          Please Select Preferred Language
+        </Text>
+        <Image
+          source={{
+            uri: "https://raw.githubusercontent.com/AboutReact/sampleresource/master/language.png",
+          }}
+          style={styles.imageStyle}
+        />
+        {lang.map((item, key) => (
+          <View style={styles.elementContainer} key={key}>
+            <Text
+              onPress={() => settext(item.shortform)}
+              style={styles.textStyle}
+            >
+              {item.longform}
+            </Text>
+            <View style={styles.saparatorStyle} />
+          </View>
+        ))}
         <View style={styles.Middle}>
-          <Text style={styles.LoginText}>Login</Text>
+          <Text style={styles.LoginText}>{StringsOfLanguages.t("Login")}</Text>
         </View>
         <View style={styles.text2}>
-          <Text>Don't have an account? </Text>
+          <Text>{StringsOfLanguages.t("Dont have an account?")} </Text>
           <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-            <Text style={styles.signupText}> Sign up</Text>
+            <Text style={styles.signupText}>
+              {" "}
+              {StringsOfLanguages.t("Sign up")}
+            </Text>
           </TouchableOpacity>
         </View>
 
         {/* First Name */}
-        <View style={styles.buttonStyle}>
+        {/* <View style={styles.buttonStyle}>
           <View style={styles.emailInput}>
             <Input
               InputLeftElement={
@@ -155,9 +193,9 @@ export default function SignIn({ navigation }) {
               editable={true}
             />
           </View>
-        </View>
+        </View> */}
         {/* Last Name */}
-        <View style={styles.buttonStyle}>
+        {/* <View style={styles.buttonStyle}>
           <View style={styles.emailInput}>
             <Input
               InputLeftElement={
@@ -193,7 +231,7 @@ export default function SignIn({ navigation }) {
               editable={true}
             />
           </View>
-        </View>
+        </View> */}
 
         {/* Username or Email Input Field */}
         <View style={styles.buttonStyle}>
@@ -213,7 +251,7 @@ export default function SignIn({ navigation }) {
                 />
               }
               variant="outline"
-              placeholder="Username or Email"
+              placeholder={StringsOfLanguages.t("User Name or Email")}
               _light={{
                 placeholderTextColor: "blueGray.400",
               }}
@@ -253,7 +291,7 @@ export default function SignIn({ navigation }) {
               }
               variant="outline"
               secureTextEntry={true}
-              placeholder="Password"
+              placeholder={StringsOfLanguages.t("Password")}
               _light={{
                 placeholderTextColor: "blueGray.400",
               }}
@@ -277,7 +315,7 @@ export default function SignIn({ navigation }) {
         {/* Button */}
         <View style={styles.buttonStyle}>
           <Button style={styles.buttonDesign} onPress={onSubmit}>
-            LOGIN
+            {StringsOfLanguages.t("Login")}
           </Button>
         </View>
 

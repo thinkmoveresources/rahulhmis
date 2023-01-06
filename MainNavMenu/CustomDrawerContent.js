@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import SignIn from "../NavScreens/SignIn";
 function CustomDrawerContent(props) {
   navigation = useNavigation(); 
   const [mainDrawer, setMainDrawer] = useState(true);
@@ -39,9 +40,12 @@ function CustomDrawerContent(props) {
   // const logOut = async () =>('log out');
   const logOut = async () => {
     try {
-      await AsyncStorage.removeItem('jwt')
-      // navigation.navigate('WelcomeScreen');
-      navigation.navigate('WelcomeScreen');
+      // await AsyncStorage.removeItem('jwt')
+      // // navigation.navigate('WelcomeScreen');
+      // navigation.navigate("SignIn");
+      await AsyncStorage.removeItem("usertoken");
+      await AsyncStorage.removeItem("userData");
+      navigation.navigate("SignIn");
     
     } catch(e){
       console.log(e)

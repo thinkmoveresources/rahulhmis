@@ -1,75 +1,98 @@
-import React,{ useEffect } from 'react';
-import {NavigationContainer} from '@react-navigation/native';
- import {createStackNavigator} from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import 'react-native-gesture-handler';
-import LoadingScreen from './NavScreens/LoadingScreen';
-import WelcomeScreen from './NavScreens/WelcomeScreen';
-import SignUp from './NavScreens/SignUp';
-import SignIn from './NavScreens/SignIn';
-import { NativeBaseProvider } from "native-base";
-// import MainMenuNavigation from './MainMenuNavigation';
-import NavMenu from './NavScreens/NavMenu';
-import { Image } from 'react-native';
-const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
-function LogoTitle() {
-  return (
-    <Image
-      style={{ width: 50, height: 50 }}
-      source={require('./assets/favicon.png')}
-    />
-  );
-}
-export default function App() {
-      
-    return (
-      <NativeBaseProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Loading"
-              component={LoadingScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="WelcomeScreen"
-              component={WelcomeScreen}
-              options={{ headerShown: true }}
-            />
-            {/* <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: true }}/>
-        <Stack.Screen name='SignIn' component={SignIn} options={{ headerShown: true }}/> */}
-            <Stack.Screen
-              name="SignUp"
-              component={SignUp}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="SignIn"
-              component={SignIn}
-              options={{ headerShown: false }}
-            />
-            {/* <Drawer.Screen name='MainMenuNavigation' component={MainMenuNavigation} options={{ headerShown: true }}/> */}
-            <Drawer.Screen
-              name="NavMenu"
-              component={NavMenu}
-              options={{
-                headerShown: false,
-                headerTitle: (props) => <LogoTitle {...props} />,
-                headerRight: () => (
-                  <Button
-                    onPress={() => handlePress()}
-                    icon={<Icon name="bell" size={15} color="white" />}
-                    iconRight
-                    // title="EXIT"
-                  />
-                ),
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </NativeBaseProvider>
-    );
+import React from "react";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { createSpeechlySpeechRecognition } from "@speechly/speech-recognition-polyfill";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Animated,
+  Text,
+  SafeAreaView,
+  TextInput,
+  Button,
+} from "react-native";
+const appId = "2214722a-452c-4dd0-b6b6-dd0401d0da70";
+const SpeechlySpeechRecognition = createSpeechlySpeechRecognition(appId);
+// SpeechRecognition.applyPolyfill(SpeechlySpeechRecognition);
+const App = () => {
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+ const startListening = () =>
+   SpeechRecognition.startListening({ continuous: true, language: "gu-IN" });
+  if (!browserSupportsSpeechRecognition) {
+    return <Text>Browser doesn't support speech recognition.</Text>;
   }
+
+  return (
+    // <View style={styles.container}>
+    //   <Text>Microphone: {listening ? "on" : "off"}</Text>
+    //   <Button onClick={SpeechRecognition.startListening}>Start</Button>
+    //   <Button onClick={SpeechRecognition.stopListening}>Stop</Button>
+    //   <Button onClick={resetTranscript}>Reset</Button>
+    //   <Text>{transcript}</Text>
+    // </View>
+    <View style={styles.container}>
+      <Text>Microphone: {listening ? "on" : "off"}</Text>
+      <Text>{transcript}</Text>
+      {/* <TouchableOpacity
+        onPress={SpeechRecognition.startListening}
+        style={styles.goButton}
+      >
+        <Text style={styles.buttonText}>Start</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={SpeechRecognition.stopListening}
+        style={styles.goButton}
+      >
+        <Text style={styles.buttonText}>Stop</Text>
+      </TouchableOpacity> */}
+      <TouchableOpacity onPress={resetTranscript} style={styles.goButton}>
+        <Text style={styles.buttonText}>Reset</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+          onTouchStart={startListening}
+        // onTouchStart={SpeechRecognition.startListening({ language: "zh-CN" })}
+        onMouseDown={startListening}
+        // onMouseDown={SpeechRecognition.startListening({ language: "zh-CN" })}
+        onTouchEnd={SpeechRecognition.stopListening}
+        onMouseUp={SpeechRecognition.stopListening}
+        style={styles.goButton}
+      >
+        <Text style={styles.buttonText}>Hold and Speek </Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    // paddingTop: Constants.statusBarHeight,
+    backgroundColor: "#ecf0f1",
+    padding: 8,
+  },
+  inputBox: {
+    marginTop: 200,
+    width: "80%",
+    alignSelf: "center",
+    height: 40,
+    textAlign: "center",
+    borderWidth: 4,
+    outline: "none",
+  },
+  goButton: {
+    width: "50%",
+    height: 55,
+    alignSelf: "center",
+    padding: 10,
+    margin: 10,
+  },
+});
+export default App;

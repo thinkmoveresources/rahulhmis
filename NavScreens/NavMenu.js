@@ -18,6 +18,7 @@ import User_registration from "../NavScreens/users/User_registration";
 import CustomDrawerContent from "../MainNavMenu/CustomDrawerContent.js";
 import { drawerItemsMain } from "../MainNavMenu/drawerItemsMain";
 import CustomHeader from "../MainNavMenu/CustomHeader";
+import RootNavigator from "../navigation/RootNavigator";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -29,8 +30,11 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 // import Welcome from '../screens/Welcome';
 import { Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import SignIn from "../NavScreens/SignIn";
 const Stack = createStackNavigator();
 //  const Drawer = createDrawerNavigator();
+
 const Drawer = createDrawerNavigator();
 function HomeScreen({ props }) {
   return (
@@ -58,12 +62,12 @@ function Settings2Screen() {
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Splash />
       <Text>Settings 2 Screen</Text>
+      <Text>{userprofile.email}</Text>
     </View>
   );
 }
 function Settings3Screen() {
   return (
-    
     <View style={styles1.container}>
       <View style={styles1.top}>
         <Text>Top View</Text>
@@ -167,6 +171,11 @@ function Registration_call() {
     </View>
   );
 }
+function SignIn1() {
+  return (    
+      <SignIn />    
+  );
+}
 export function MainDrawerNavigation({ props }) {
   return (
     <Drawer.Navigator
@@ -182,6 +191,11 @@ export function MainDrawerNavigation({ props }) {
       <Drawer.Screen name="Registration" component={Registration_call} />
       <Drawer.Screen name="Users" component={User_registration} />
       <Drawer.Screen name="Splash" component={Splash_func} />
+      <Stack.Screen
+        name="SignIn"
+        component={SignIn1}
+        options={{ headerShown: false }}
+      />
       {/* <Drawer.Screen name="Userlist" component={UserScreen} />
       <Drawer.Screen name="UserDetails" component={UserDetailScreen} />
       <Drawer.Screen name="AddUser" component={AddUserScreen} />
@@ -195,6 +209,32 @@ export function MainDrawerNavigation({ props }) {
 }
 
 const NavMenu: () => React$Node = () => {
+  // let usertoken = AsyncStorage.getItem("usertoken");
+  // let userdata = AsyncStorage.getItem("userData");
+  // // Get user token
+  // usertoken
+  //   .then((data) => {
+  //     let obj = JSON.parse(data);
+  //     console.log(obj);
+  //   })
+  //   // Promise is rejected/unsuccessful. Give error message.
+  //   .catch((error) => {
+  //     // error is the <reason> of the promise
+  //     console.error(error);
+  //   });
+  // // Get User Data
+  // userdata
+  //   .then((data) => {
+  //     // console.log(JSON.parse(data));
+  //     let obj = JSON.parse(data);
+  //     // console.log(obj);
+  //     console.log(obj.password);
+  //   })
+  //   // Promise is rejected/unsuccessful. Give error message.
+  //   .catch((error) => {
+  //     // error is the <reason> of the promise
+  //     console.error(error);
+  //   });
   return (
     <Stack.Navigator
       screenOptions={{
@@ -204,7 +244,7 @@ const NavMenu: () => React$Node = () => {
           fontWeight: "bold",
         },
         header: (props) => {
-          return <CustomHeader {...props} />;
+          // return <CustomHeader {...props} />;
         },
       }}
     >

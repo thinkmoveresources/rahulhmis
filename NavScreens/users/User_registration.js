@@ -20,6 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 import { alignContent, flex, flexDirection, width } from "styled-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+
 export default function SignUp({ navigation }) {
   const [nameinfo, setNameinfo] = useState({
     email: "",
@@ -27,43 +28,83 @@ export default function SignUp({ navigation }) {
     fname: "",
     lname: "",
     state: "",
+    role: "",
   });
   const [errmsg, setErrormsg] = useState("");
   const [orgdata, setOrgdata] = useState([]);
-  const sendGetRequest = async () => {
+  const [roledata, setRoledata] = useState([]);
+  const [tempusertoken, setTempusertoken] = useState([]);
+  const sendGetProfile = async () => {
+    let usertoken = await AsyncStorage.getItem("usertoken");
+    // console.log(usertoken);
     try {
-      const resp = await axios
-        .get("https://www.thinkmoveresources.com/organisation/allorg")
-        .then((response) => {
-          const data = response.data;
-          setOrgdata(data);
-          console.log(data); // returns correctly filled array
+      axios
+        .get("https://www.thinkmoveresources.com/Users/profile", {
+          headers: {
+            Accept: "application/json",
+            // Template literals. String in a string, you can also do 'Bearer ' + getToken
+            Authorization: `Bearer ${usertoken}`,
+          },
+        })
+        .then((res) => {
+          const details = res.data[0];
+          console.log("XXXXXXXXXdetailsXXXXXXXXX");
+          console.log(details);
         });
     } catch (err) {
       // Handle Error Here
       console.error(err);
     }
   };
-
+  const sendGetOrgRequest = async () => {
+    try {
+      const resp = await axios
+        .get("https://www.thinkmoveresources.com/organisation/allorg")
+        .then((response) => {
+          const data = response.data;
+          setOrgdata(data);
+          // console.log(data); // returns correctly filled array
+        });
+    } catch (err) {
+      // Handle Error Here
+      console.error(err);
+    }
+  };
+  const sendGetRoleRequest = async () => {
+    try {
+      const resp = await axios
+        .get("https://www.thinkmoveresources.com/role/allrole")
+        .then((response) => {
+          const data = response.data;
+          setRoledata(data);
+          // console.log(data); // returns correctly filled array
+        });
+    } catch (err) {
+      // Handle Error Here
+      console.error(err);
+    }
+  };
   useEffect(() => {
-    sendGetRequest();
+    sendGetProfile();
+    sendGetOrgRequest();
+    sendGetRoleRequest();
   }, []); //This will run only once
   const submitUser = async () => {
-    console.log(nameinfo);
+    // console.log(nameinfo);
     await axios
       .post("https://www.thinkmoveresources.com/Users/register", {
         nameinfo,
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       })
       .then((responce) => {
-        console.log(responce.data);
+        // console.log(responce.data);
         return responce.data;
       })
       .then((res) => {
         if (res === "user already exist...") {
           setErrormsg(res);
         } else {
-            this.props.history.push(`/patient/login`);
+          // this.props.history.push(`/patient/login`);
         }
       });
   };
@@ -75,7 +116,7 @@ export default function SignUp({ navigation }) {
         <View style={styles.Middle}>
           <Text style={styles.LoginText}>User Registration</Text>
         </View>
-
+        {/* Choose State */}
         <View style={styles.buttonStyle}>
           <View style={styles.emailInput}>
             <Box maxW="300">
@@ -83,7 +124,7 @@ export default function SignUp({ navigation }) {
                 selectedValue={nameinfo.state}
                 minWidth="200"
                 accessibilityLabel="Choose Service"
-                placeholder="Choose Service"
+                placeholder="Choose State"
                 _selectedItem={{
                   bg: "teal.600",
                   endIcon: <CheckIcon size="5" />,
@@ -108,7 +149,39 @@ export default function SignUp({ navigation }) {
             {orgdata.state}
           </View>
         </View>
-
+        {/* Cheese ROle */}
+        <View style={styles.buttonStyle}>
+          <View style={styles.emailInput}>
+            <Box maxW="300">
+              <Select
+                selectedValue={nameinfo.role}
+                minWidth="200"
+                accessibilityLabel="Choose Service"
+                placeholder="Choose Role"
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <CheckIcon size="5" />,
+                }}
+                mt={1}
+                onValueChange={(value) =>
+                  setNameinfo({
+                    ...nameinfo,
+                    role: value,
+                  })
+                }
+              >
+                {roledata.map((roledata) => (
+                  <Select.Item
+                    key={roledata.role_id}
+                    label={roledata.role_name}
+                    value={roledata.role_name}
+                  />
+                ))}
+              </Select>
+            </Box>
+            {roledata.role_name}
+          </View>
+        </View>
         <View style={styles.buttonStyle}>
           <View style={styles.emailInput}>
             <Input
